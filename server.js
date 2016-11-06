@@ -1,9 +1,5 @@
 var express = require('express')
-var mongoose = require('mongoose')
 var bodyParser = require('body-parser')
-var cors = require('cors')
-var jwt = require('jsonwebtoken')
-var passport = require('passport')
 var app = express()
 
 app.use(bodyParser.json())
