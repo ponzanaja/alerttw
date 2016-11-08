@@ -60,11 +60,11 @@ function receivedMessage(event) {
 
   var messageText = message.text;
   var messageAttachments = message.attachments;
-
+/*
   if (messageText) {
     if (messageText === 'hello') {
       sendTextMessage(senderID, "ควยเอ้ย ไม่รู้ request");
-    }
+    }*/
 
     // If we receive a text message, check to see if it matches a keyword
     // and send back the example. Otherwise, just echo the text we received.
