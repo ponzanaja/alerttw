@@ -67,18 +67,21 @@ function receivedMessage(event) {
       sendTextMessage(senderID, "Welcome to my bots Have take a look");
     }else if (messageText == 'about') {
       sendTextMessage(senderID, "This bot created by Wipoo suvunnasan");
+    }else {
+      sendTextMessage(senderID, "Your entered wrong Keywords");
     }
 
     // If we receive a text message, check to see if it matches a keyword
     // and send back the example. Otherwise, just echo the text we received.
-    switch (messageText) {
+    /*switch (messageText) {
       case 'generic':
         sendGenericMessage(senderID);
         break;
 
       default:
         sendTextMessage(senderID, "Your entered wrong Keywords");
-    }
+    }*/
+
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
   }
