@@ -77,7 +77,7 @@ function receivedMessage(event) {
         break;
 
       default:
-        sendTextMessage(senderID, "Your enterd wrong Keywords");
+        sendTextMessage(senderID, "Your entered wrong Keywords");
     }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
