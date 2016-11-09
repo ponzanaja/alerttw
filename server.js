@@ -64,6 +64,9 @@ function receivedMessage(event) {
   if (messageText) {
     if (messageText === 'hello') {
       //sendTextMessage(senderID, "ควยเอ้ย ไม่รู้ request");
+      sendTextMessage(senderID, "Welcome to my bots Have take a look");
+    }else if (messageText == 'about') {
+      sendTextMessage(senderID, "This bot created by Wipoo suvunnasan");
     }
 
     // If we receive a text message, check to see if it matches a keyword
@@ -74,7 +77,7 @@ function receivedMessage(event) {
         break;
 
       default:
-        sendTextMessage(senderID, messageText);
+        sendTextMessage(senderID, "Your enterd wrong Keywords");
     }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
