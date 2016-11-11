@@ -68,7 +68,7 @@ function receivedMessage(event) {
     }else if (messageText == 'about') {
       sendTextMessage(senderID, "This bot created by Wipoo suvunnasan");
     }else {
-      sendTextMessage(senderID, "Your entered wrong Keywords");
+      sendTextMessage(senderID, "Your entered wrong Keywords Please try : hello , about");
     }
 
     // If we receive a text message, check to see if it matches a keyword
