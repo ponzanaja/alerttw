@@ -79,8 +79,18 @@ function receivedMessage(event) {
     }else if (messageText == 'about') {
       sendTextMessage(senderID, "This bot created by Wipoo suvunnasan");
     }else if (messageText == 'subscript') {
-      sendTextMessage(senderID, "คุณได้สมัครใช้งานเรียบร้อยแล้ว ");
-      addUser(senderID)
+      sendTextMessage(senderID, "ยืนยันการสมัครของคุณ y/n ? ");
+      if(message.text == 'y')
+      {
+        addUser(senderID)
+        sendTextMessage(senderID, "คุณได้ทำการสมัครรับข้อมูลเรียบร้อยแล้ว");
+      }else if(message.text == 'n'){
+        sendTextMessage(senderID, "คุณได้ทำการยกเลิกการสมัครรับข้อมูลแล้ว");
+      }else {
+        sendTextMessage(senderID, "คุณกรอกข้อมูลผิดกรุณากรอกใหม่อีกครั้ง y/n");
+      }
+
+
     }else {
       sendTextMessage(senderID, "Your entered wrong Keywords Please try : hello , about , subscript");
     }
