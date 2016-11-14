@@ -140,10 +140,12 @@ function callSendAPI(messageData) {
 }
 
 function addUser(userID) {
-  console.log(userID);
-  firebase.database().ref('users').set({
-    UID: userID
-  });
+  var vm = this
+  Users.on('child_added', function (data) {
+      var item = data.val()
+      item.id = data.key
+    vm.Users.push(item)
+    });
 }
 
 app.listen(app.get('port'), function () {
