@@ -140,10 +140,10 @@ function callSendAPI(messageData) {
 }
 
 function addUser(userID) {
-  firebase.database().ref('users/' + userId).set({
-    UID: userID,
+  var vm = this
+  firebase.database().ref('users').set({
+    UID: this.userID,
     follow: "",
-
   });
 }
 
