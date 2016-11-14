@@ -1,7 +1,18 @@
 var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
+var firebase = require('firebase');
 var app = express()
+
+var config = {
+    apiKey: "AIzaSyDA_HOpzHHsdcsOX36Gh80_i4MCYHHJr5c",
+    authDomain: "userdatabase-71afb.firebaseapp.com",
+    databaseURL: "https://userdatabase-71afb.firebaseio.com",
+    storageBucket: "userdatabase-71afb.appspot.com",
+    messagingSenderId: "49200232033"
+};
+firebase.initializeApp(config);
+var Users = firebase.database().ref('user')
 
 app.use(bodyParser.json())
 app.set('port', (process.env.PORT || 4000))
@@ -67,6 +78,10 @@ function receivedMessage(event) {
       sendTextMessage(senderID, "Welcome to my bots Have take a look");
     }else if (messageText == 'about') {
       sendTextMessage(senderID, "This bot created by Wipoo suvunnasan");
+    }else if (messageText == 'subscript') {
+      sendTextMessage(senderID, "คุณได้สมัครใช้งานเรียบร้อยแล้ว ");
+        Users.push(senderID)
+    })
     }else {
       sendTextMessage(senderID, "Your entered wrong Keywords Please try : hello , about");
     }
