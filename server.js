@@ -81,7 +81,7 @@ function receivedMessage(event) {
     }else if (messageText == 'subscript') {
       sendTextMessage(senderID, "คุณได้สมัครใช้งานเรียบร้อยแล้ว ");
         Users.push(senderID)
-    })
+    });
     }else {
       sendTextMessage(senderID, "Your entered wrong Keywords Please try : hello , about");
     }
