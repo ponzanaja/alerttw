@@ -80,11 +80,7 @@ function receivedMessage(event) {
       sendTextMessage(senderID, "This bot created by Wipoo suvunnasan");
     }else if (messageText == 'subscript') {
       sendTextMessage(senderID, "คุณได้สมัครใช้งานเรียบร้อยแล้ว ");
-      Users.on('child_added', function (data) {
-      var item = data.val()
-      item.id = data.key
-      Users.push(senderID)
-    });
+      addUser(senderID)
     }else {
       sendTextMessage(senderID, "Your entered wrong Keywords Please try : hello , about , subscript");
     }
@@ -140,6 +136,14 @@ function callSendAPI(messageData) {
       console.error(response);
       console.error(error);
     }
+  });
+}
+
+function addUser(userID) {
+  firebase.database().ref('users/' + userId).set({
+    UID: userID,
+    follow: "",
+
   });
 }
 
