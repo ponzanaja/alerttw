@@ -80,9 +80,13 @@ function receivedMessage(event) {
       sendTextMessage(senderID, "This bot created by Wipoo suvunnasan");
     }else if (messageText == 'subscript') {
       sendTextMessage(senderID, "คุณได้สมัครใช้งานเรียบร้อยแล้ว ");
-        Users.push(senderID);
+      Users.on('child_added', function (data) {
+      var item = data.val()
+      item.id = data.key
+      Users.push(senderID)
+    });
     }else {
-      sendTextMessage(senderID, "Your entered wrong Keywords Please try : hello , about");
+      sendTextMessage(senderID, "Your entered wrong Keywords Please try : hello , about , subscript");
     }
 
     // If we receive a text message, check to see if it matches a keyword
