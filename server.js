@@ -140,12 +140,11 @@ function callSendAPI(messageData) {
 }
 
 function addUser(userID) {
-  var vm = this
-  Users.on('child_added', function (data) {
-      var item = data.val()
-      item.id = data.key
-    vm.Users.push(item)
-    });
+  var data = {
+    UID : userID,
+    follower : ""
+  }
+  Users.push(data)
 }
 
 app.listen(app.get('port'), function () {
