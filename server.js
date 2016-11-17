@@ -81,14 +81,7 @@ function receivedMessage(event) {
     }else if (messageText == 'subscript') {
       sendTextMessage(senderID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว ");
         addUser(senderID)
-        
-
-      }else {
-        sendTextMessage(senderID, "คุณกรอกข้อมูลผิดกรุณากรอกใหม่อีกครั้ง y/n");
-      }
-
-
-    }else {
+      }else{
       sendTextMessage(senderID, "Your entered wrong Keywords Please try : hello , about , subscript");
     }
 
