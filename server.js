@@ -144,7 +144,7 @@ function callSendAPI(messageData) {
 function addUser(userID) {
   var data = {
     UID : userID,
-    follower : [],
+    follower : ["TGPL"],
     state : "0"
   }
   Users.push(data)
