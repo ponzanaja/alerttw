@@ -99,6 +99,8 @@ function receivedMessage(event) {
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
   }
+
+
 }
 function sendGenericMessage(recipientId, messageText) {
   // To be expanded in later sections
@@ -142,7 +144,8 @@ function callSendAPI(messageData) {
 function addUser(userID) {
   var data = {
     UID : userID,
-    follower : ""
+    follower : []
+    state : "0"
   }
   Users.push(data)
 }
