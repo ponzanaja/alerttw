@@ -19,6 +19,8 @@ app.set('port', (process.env.PORT || 4000))
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
+sendTextMessage("1106713592711714","Hello Dudes")
+
 app.get('/webhook', function(req, res) {
   var key = 'EAAC3DSTTyCMBANmzGelQQ7g34BcBrnqMNIxK36Q7CZCKamEr9amn1xZAzBpZCuLsGDmX7LpKofZCwxvnS0auQKnsZBqeYKg6SNW8H5ldKEYfm9ZAnxm8Jin7fP5HCJ5q7jiAuYrrspxB64keZBZAQIXjwrYF6Qvfu3sSD19TTpgVxAZDZD'
   if (req.query['hub.verify_token'] === key) {
