@@ -11,6 +11,9 @@ var config = {
     storageBucket: "userdatabase-71afb.appspot.com",
     messagingSenderId: "49200232033"
 };
+
+setInterval(function(){sendTextMessage("939326652838978", "This was send at"+ Date.now());}, 60000);
+
 firebase.initializeApp(config);
 var Users = firebase.database().ref('user')
 
