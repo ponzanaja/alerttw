@@ -84,7 +84,6 @@ function receivedMessage(event) {
       sendTextMessage(senderID, "This bot created by Wipoo suvunnasan");
     }else if (messageText == 'subscript') {
       sendTextMessage(senderID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว ");
-
         addUser(senderID)
       }else{
       sendTextMessage(senderID, "Your entered wrong Keywords Please try : hello , about , subscript");
@@ -142,6 +141,7 @@ function callSendAPI(messageData) {
       console.error("Unable to send message.");
       console.error(response);
       console.error(error);
+
     }
   });
 }
@@ -149,12 +149,12 @@ function callSendAPI(messageData) {
 function addUser(userID) {
   var data = {
     UID : userID,
-    follower : [],
+    follower : [""],
     state : "1"
   }
   Users.push(data)
-    sendTextMessage(senderID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
-    
+    //sendTextMessage(senderID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
+
 }
 
 app.listen(app.get('port'), function () {
