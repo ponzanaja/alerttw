@@ -152,15 +152,9 @@ let userInfo = [];
     let valid = userInfo.find(user => user.UID === userID)
     if(valid)
     {
-
-          setTimeout(function() {
-            sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว !! ");
-            }, 1000)
-          setTimeout(function() {
-            sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
-          }, 2000)
-
-      }
+        sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว !! ");
+        sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
+    }
     else {
       var data = {
         UID : userID,
