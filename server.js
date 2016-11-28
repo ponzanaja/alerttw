@@ -146,17 +146,29 @@ function callSendAPI(messageData) {
 }
 
 function addUser(userID) {
-
-  //var test = Users.find(user => user.UID === userID)
-  /*if(!test){*/
-    var data = {
-      UID : userID,
-      follower : [" "],
-      state : "1"
+let userInfo = [];
+    Users.on('child_added', function(snapshot){
+    userInfo.push(snapshot.val())
+    var valid = userInfo.find(user => user.UID === userID)
+    if(valid)
+    {
+      sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว !! ");
+      sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
     }
-    Users.push(data)
-    sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว ");
-    sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
+    else {
+      var data = {
+        UID : userID,
+        follower : [" "],
+        state : "1"
+      }
+      Users.push(data)
+      sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว ");
+      sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
+    }
+
+    });
+
+
   /*}else {
     sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว กรุณากรอก Channel ที่ต้องการจะติดตาม");
   }*/
