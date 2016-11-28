@@ -155,7 +155,7 @@ function addUser(userID) {
       state : "1"
     }
     Users.push(data)
-    sendTextMessage(senderID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว ");
+    sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว ");
     sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
   /*}else {
     sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว กรุณากรอก Channel ที่ต้องการจะติดตาม");
