@@ -147,7 +147,7 @@ function callSendAPI(messageData) {
 
 function addUser(userID) {
 let userInfo = [];
-    Users.on('child_added', function(snapshot){
+    Users.once('child_added', function(snapshot){
     userInfo.push(snapshot.val())
     var valid = userInfo.find(user => user.UID === userID)
     if(valid)
