@@ -15,7 +15,7 @@ var config = {
 //setInterval(function(){sendTextMessage("939326652838978", "This was send at"+ Date.now());}, 60000);
 
 firebase.initializeApp(config);
-var Users = firebase.database().ref('user')
+var Users = firebase.database().ref('users')
 //var x = users.find(user => user.UID === id)
 
 app.use(bodyParser.json())
