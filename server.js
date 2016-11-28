@@ -147,13 +147,22 @@ function callSendAPI(messageData) {
 }
 
 function addUser(userID) {
-  var data = {
-    UID : userID,
-    follower : [" "],
-    state : "1"
+
+  var test = Users.find(user => user.UID === userID)
+  if(!test){
+    var data = {
+      UID : userID,
+      follower : [" "],
+      state : "1"
+    }
+    Users.push(data)
+    sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
+  }else {
+    sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว กรุณากรอก Channel ที่ต้องการจะติดตาม");
   }
-  Users.push(data)
-    //sendTextMessage(senderID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
+
+
+
 
 }
 
