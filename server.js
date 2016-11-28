@@ -16,6 +16,7 @@ var config = {
 
 firebase.initializeApp(config);
 var Users = firebase.database().ref('user')
+//var x = users.find(user => user.UID === id)
 
 app.use(bodyParser.json())
 app.set('port', (process.env.PORT || 4000))
@@ -83,6 +84,7 @@ function receivedMessage(event) {
       sendTextMessage(senderID, "This bot created by Wipoo suvunnasan");
     }else if (messageText == 'subscript') {
       sendTextMessage(senderID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว ");
+
         addUser(senderID)
       }else{
       sendTextMessage(senderID, "Your entered wrong Keywords Please try : hello , about , subscript");
@@ -147,10 +149,12 @@ function callSendAPI(messageData) {
 function addUser(userID) {
   var data = {
     UID : userID,
-    follower : ["TGPL"],
-    state : "0"
+    follower : [],
+    state : "1"
   }
   Users.push(data)
+    sendTextMessage(senderID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
+    
 }
 
 app.listen(app.get('port'), function () {
