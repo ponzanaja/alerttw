@@ -17,7 +17,10 @@ var config = {
 firebase.initializeApp(config);
 var Users = firebase.database().ref('users')
 //var x = users.find(user => user.UID === id)
-
+var userInfo = [];
+  Users.on('child_added', function(snapshot){
+      userInfo.push(snapshot.val());
+  });
 app.use(bodyParser.json())
 app.set('port', (process.env.PORT || 4000))
 app.use(bodyParser.urlencoded({extended: false}))
@@ -146,6 +149,15 @@ function callSendAPI(messageData) {
 }
 
 function addUser(userID) {
+
+
+  var x = userInfo.find(user => user.UID === userid)
+
+  if(x){
+  sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว !! ");
+  }
+}
+/*
 let userInfo = [];
     Users.on('child_added', function(snapshot){
     userInfo.push(snapshot.val())
@@ -167,8 +179,8 @@ let userInfo = [];
     }
 
     });
+*/
 
-}
   /*}else {
     sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว กรุณากรอก Channel ที่ต้องการจะติดตาม");
   }*/
