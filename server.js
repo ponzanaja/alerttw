@@ -161,7 +161,6 @@ let userInfo = [];
           }, 2000)
 
       }
-    }
     else {
       var data = {
         UID : userID,
@@ -175,7 +174,7 @@ let userInfo = [];
 
     });
 
-
+}
   /*}else {
     sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว กรุณากรอก Channel ที่ต้องการจะติดตาม");
   }*/
@@ -183,7 +182,7 @@ let userInfo = [];
 
 
 
-}
+
 
 app.listen(app.get('port'), function () {
   console.log('run at port', app.get('port'))
