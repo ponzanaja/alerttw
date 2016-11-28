@@ -151,11 +151,12 @@ function callSendAPI(messageData) {
 function addUser(userID) {
 
 
-  var x = userInfo.find(user => user.UID === userid)
+  var x = userInfo.find(user => user.UID === userID)
 
   if(x){
   sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว !! ");
   }
+
 }
 /*
 let userInfo = [];
