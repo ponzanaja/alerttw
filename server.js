@@ -147,20 +147,22 @@ function callSendAPI(messageData) {
 
 function addUser(userID) {
 let userInfo = [];
+let count = 1;
     Users.on('child_added', function(snapshot){
     userInfo.push(snapshot.val())
     let valid = userInfo.find(user => user.UID === userID)
-    let count
-    count++
+
+
     if(valid)
     {
-      if(count !== 2 ){
+      if(count == 1 ){
           setTimeout(function() {
             sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว !! ");
             }, 1000)
           setTimeout(function() {
             sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
           }, 2000)
+          count++
       }
     }
     else {
