@@ -83,7 +83,6 @@ function receivedMessage(event) {
     }else if (messageText == 'about') {
       sendTextMessage(senderID, "This bot created by Wipoo suvunnasan");
     }else if (messageText == 'subscript') {
-      sendTextMessage(senderID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว ");
         addUser(senderID)
       }else{
       sendTextMessage(senderID, "Your entered wrong Keywords Please try : hello , about , subscript");
@@ -148,18 +147,19 @@ function callSendAPI(messageData) {
 
 function addUser(userID) {
 
-  var test = Users.find(user => user.UID === userID)
-  if(!test){
+  //var test = Users.find(user => user.UID === userID)
+  /*if(!test){*/
     var data = {
       UID : userID,
       follower : [" "],
       state : "1"
     }
     Users.push(data)
+    sendTextMessage(senderID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว ");
     sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
-  }else {
+  /*}else {
     sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว กรุณากรอก Channel ที่ต้องการจะติดตาม");
-  }
+  }*/
 
 
 
