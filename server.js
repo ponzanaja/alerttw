@@ -155,7 +155,16 @@ function addUser(userID) {
 
   if(x){
   sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว !! ");
+}else {
+  var data = {
+    UID : userID,
+    follower : [" "],
+    state : "1"
   }
+  Users.push(data)
+  sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว ");
+  sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
+}
 
 }
 /*
