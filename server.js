@@ -3,7 +3,7 @@ var bodyParser = require('body-parser')
 var request = require('request')
 var firebase = require('firebase');
 var app = express()
-
+const key = 'EAAC3DSTTyCMBAPcOlfjovZCs8oZBWqDAnU46eTLaDNxtcCNg8jfvpcHZCSw3C0fBxbjGptu7zc9wuGKBVsK7n3L43Uves1k6tqhkT4YqnrpWbtVNEQGwhwFWIUOHjKZCZBuheNoMqfACA7A7L5NJ3OJZCfsoXKNdz7qKtguHsLFgZDZD'
 var config = {
     apiKey: "AIzaSyDA_HOpzHHsdcsOX36Gh80_i4MCYHHJr5c",
     authDomain: "userdatabase-71afb.firebaseapp.com",
@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
 app.get('/webhook', function(req, res) {
-  var key = 'EAAC3DSTTyCMBAPcOlfjovZCs8oZBWqDAnU46eTLaDNxtcCNg8jfvpcHZCSw3C0fBxbjGptu7zc9wuGKBVsK7n3L43Uves1k6tqhkT4YqnrpWbtVNEQGwhwFWIUOHjKZCZBuheNoMqfACA7A7L5NJ3OJZCfsoXKNdz7qKtguHsLFgZDZD'
+
   if (req.query['hub.verify_token'] === key) {
     res.send(req.query['hub.challenge'])
   }
@@ -129,7 +129,7 @@ function sendTextMessage(recipientId, messageText) {
 function callSendAPI(messageData) {
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: { access_token: 'EAAC3DSTTyCMBANmzGelQQ7g34BcBrnqMNIxK36Q7CZCKamEr9amn1xZAzBpZCuLsGDmX7LpKofZCwxvnS0auQKnsZBqeYKg6SNW8H5ldKEYfm9ZAnxm8Jin7fP5HCJ5q7jiAuYrrspxB64keZBZAQIXjwrYF6Qvfu3sSD19TTpgVxAZDZD' },
+    qs: { access_token: key },
     method: 'POST',
     json: messageData
 
