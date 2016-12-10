@@ -21,13 +21,14 @@ var userInfo = [];
   Users.on('child_added', function(snapshot){
       userInfo.push(snapshot.val());
   });
+
 app.use(bodyParser.json())
 app.set('port', (process.env.PORT || 4000))
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
 app.get('/webhook', function(req, res) {
-  var key = 'EAAC3DSTTyCMBANmzGelQQ7g34BcBrnqMNIxK36Q7CZCKamEr9amn1xZAzBpZCuLsGDmX7LpKofZCwxvnS0auQKnsZBqeYKg6SNW8H5ldKEYfm9ZAnxm8Jin7fP5HCJ5q7jiAuYrrspxB64keZBZAQIXjwrYF6Qvfu3sSD19TTpgVxAZDZD'
+  var key = 'EAAC3DSTTyCMBAIHUZAolWtbGHmUHaHCa27ChQtIc05j7ZCY5FQ4WJ8CGGUrZArEv8mHkdodz0ZAUEpxDKD7FsgNXYzh1vZBJ9MkZBGUETswbeHstou4Ws0UwzLSB83WxKsWDuNmyobdnCzW46SGNy87pK1QigYjFwKCbmaaPAUbwZDZD'
   if (req.query['hub.verify_token'] === key) {
     res.send(req.query['hub.challenge'])
   }
@@ -149,54 +150,23 @@ function callSendAPI(messageData) {
 }
 
 function addUser(userID) {
-
-
   var x = userInfo.find(user => user.UID === userID)
-
-  if(x){
-  sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว !! ");
-}else {
-  var data = {
-    UID : userID,
-    follower : [" "],
-    state : "1"
-  }
-  Users.push(data)
-  sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว ");
-  sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
-}
-
-}
-/*
-let userInfo = [];
-    Users.on('child_added', function(snapshot){
-    userInfo.push(snapshot.val())
-    let valid = userInfo.find(user => user.UID === userID)
-    if(valid)
-    {
-        sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว !! ");
-        sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
-    }
-    else {
-      var data = {
-        UID : userID,
-        follower : [" "],
-        state : "1"
-      }
-      Users.push(data)
-      sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว ");
+    //x.follower[0]
+    if(x){
+      sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว !! ");
       sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
-    }
+      }else{
+              var data = {
+                        UID : userID,
+                        follower : [" "],
+                        state : "1"
+                      }
+    Users.push(data)
+    sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว :D ");
+    sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
+  }
 
-    });
-*/
-
-  /*}else {
-    sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว กรุณากรอก Channel ที่ต้องการจะติดตาม");
-  }*/
-
-
-
+}
 
 
 
