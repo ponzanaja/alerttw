@@ -175,7 +175,7 @@ function addUser(userID) {
                       }
     Users.push(data)
     setTimeout(sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว :D "),3000);
-    setTimeout(sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");,4000);
+    setTimeout(sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม"),4000);
   }
 
 }
@@ -186,11 +186,11 @@ function addChannel (senderID){
     firebase.database().ref('users/'+user.id).update({
       state :"2"
     })
-    axios.get('https://api.twitch.tv/kraken/channels/porpengay/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
+    /*axios.get('https://api.twitch.tv/kraken/channels/porpengay/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
     .then(function (res) {
       console.log(res.data)
       //sendTextMessage(sender, res.data.main.temp - 273)
-  })
+  })*/
 }
 
 
