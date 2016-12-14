@@ -196,10 +196,11 @@ function addUser(userID) {
 function addChannel (senderID,messageText){
     sendTextMessage(senderID,"ใส่ช่อง ที่ต้องการ")
     var userData = []
-    userData = userInfo.find(user => user.UID === senderID)
-    var follows = userData.map(user => user.follower)
+    var userData = userInfo.find(user => user.UID === senderID)
+    var follows = userData.map(function(){return user.follower})
+    //var follows = userData.map(user => user.follower)
     console.log(follows);
-
+    
 
     //cat.push(messageText)
     axios.get('https://api.twitch.tv/kraken/channels/'+messageText+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
