@@ -222,7 +222,10 @@ function addChannel (senderID,messageText){
             follower : follow
 
           })
-        }else{ sendTextMessage(userID, "Error นะจ๊ะ") }
+        }
+  }).catch(function(err){
+      console.log(err);
+      sendTextMessage(senderID,"คุณกรอก Channel ไม่ถูกต้องกรุณากรอกใหม่")
   })
 }
 
