@@ -190,7 +190,7 @@ function addUser(userID) {
       }else{
               var data = {
                         UID : userID,
-                        follower : [{name:"",live :false}],
+                        follower : [{name:"",live :false,send:false}],
                         state : "1"
 
                       }
@@ -212,7 +212,8 @@ function addChannel (senderID,messageText){
         if(res.data.status != 404){
           let data = {
             name : messageText,
-            live : false
+            live : false,
+            send : false
           }
           follow.push(data)
           setTimeout(() =>{ sendTextMessage(senderID, "คุณได้เพิ่ม Channel "+messageText+" เป็นที่เรียบร้อยแล้ว") },1000)
