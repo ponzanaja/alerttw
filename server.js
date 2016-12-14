@@ -40,7 +40,7 @@ app.use(bodyParser.json())
 
 /*axios.get('http://api.openweathermap.org/data/2.5/weather?q=' + text + '&APPID=7fee5476cbd1705fb181c28e20c473b7').then(function (res) {
          console.log(res.data.main.temp)
-         sendTextMessage(sender, res.data.main.temp - 273)
+         sendTextMessage(senderID, res.data.main.temp - 273)
 })*/
 
 app.get('/webhook', function(req, res) {
@@ -200,8 +200,8 @@ function addChannel (senderID,messageText){
     .then(function (res) {
       console.log(res.data)
         if(res.data.status !== 404){
-          setTimeout(() =>{ sendTextMessage(sender, "คุณได้เพิ่ม Channel "+messageText+" เป็นที่เรียบร้อยแล้ว") },1000)
-          setTimeout(()=>{ sendTextMessage(sender, "คุณสามารถพิมพ์ !list เพื่อตรวจเช็ครายชื่อ Channel ที่คุณติดตาม") },2000)
+          setTimeout(() =>{ sendTextMessage(senderID, "คุณได้เพิ่ม Channel "+messageText+" เป็นที่เรียบร้อยแล้ว") },1000)
+          setTimeout(() =>{ sendTextMessage(senderID, "คุณสามารถพิมพ์ !list เพื่อตรวจเช็ครายชื่อ Channel ที่คุณติดตาม") },2000)
           firebase.database().ref('users/'+userData.id).update({
             follower : [messageText]//.push(messageText)
           })
