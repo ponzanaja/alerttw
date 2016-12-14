@@ -195,7 +195,8 @@ function addUser(userID) {
 
 function addChannel (senderID,messageText){
     sendTextMessage(senderID,"ใส่ช่อง ที่ต้องการ")
-    var userData = userInfo.find(user => user.UID === senderID)
+    var userData = []
+    userData = userInfo.find(user => user.UID === senderID)
     var follows = userData.map(user => user.follower)
     console.log(follows);
 
