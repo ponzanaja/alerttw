@@ -20,7 +20,10 @@ var Users = firebase.database().ref('users')
 //var x = users.find(user => user.UID === id)
 var userInfo = [];
   Users.on('child_added', function(snapshot){
-      userInfo.push(snapshot.val());
+      var item = snapshot.val();
+      item.id = snapshot.key;
+      userInfo.push(item);
+      console.log(userInfo);
   });
 
 app.use(bodyParser.json())
@@ -87,15 +90,17 @@ function receivedMessage(event) {
   var messageAttachments = message.attachments;
 
   if (messageText) {
-    if (messageText === 'hello') {
-      //sendTextMessage(senderID, "ควยเอ้ย ไม่รู้ request");
-      sendTextMessage(senderID, "Welcome to my bots Have take a look");
-    }else if (messageText == 'about') {
-      sendTextMessage(senderID, "This bot created by Wipoo suvunnasan");
-    }else if (messageText == 'subscript') {
-        addUser(senderID)
-      }else{
-      sendTextMessage(senderID, "Your entered wrong Keywords Please try : hello , about , subscript");
+      if (messageText === 'hello') {
+          //sendTextMessage(senderID, "ควยเอ้ย ไม่รู้ request");
+          sendTextMessage(senderID, "Welcome to my bots Have take a look");
+        }else if (messageText == 'about') {
+                  sendTextMessage(senderID, "This bot created by Wipoo suvunnasan");
+              }else if (messageText == 'subscript') {
+                        addUser(senderID)
+                      }else if (messageText == 'addlist') {
+                          addChannel(senderID)
+                    }else{
+                      sendTextMessage(senderID, "Your entered wrong Keywords Please try : hello , about , subscript");
     }
 
     // If we receive a text message, check to see if it matches a keyword
@@ -161,6 +166,7 @@ function addUser(userID) {
     if(x){
       sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว !! ");
       sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
+      sendTextMessage(userID, "โปรดพิมพ์ \"addlist\" เพื่อเพิ่มชื่อช่องที่ต้องการติดตาม");
       }else{
               var data = {
                         UID : userID,
@@ -168,11 +174,25 @@ function addUser(userID) {
                         state : "1"
                       }
     Users.push(data)
-    sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว :D ");
-    sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
+    setTimeout(sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว :D "),3000);
+    setTimeout(sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");,4000);
   }
 
 }
+
+function addChannel (senderID){
+    sendTextMessage(senderID,"ใส่ช่อง ที่ต้องการ")
+    var user = userInfo.find(senderID => user.UID === senderID)
+    firebase.database().ref('users/'+user.id).update({
+      state :"2"
+    })
+    axios.get('https://api.twitch.tv/kraken/channels/porpengay/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
+    .then(function (res) {
+      console.log(res.data)
+      sendTextMessage(sender, res.data.main.temp - 273)
+  })
+}
+
 
 
 
