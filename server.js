@@ -203,7 +203,7 @@ function addChannel (senderID,messageText){
           setTimeout(() =>{ sendTextMessage(senderID, "คุณได้เพิ่ม Channel "+messageText+" เป็นที่เรียบร้อยแล้ว") },1000)
           setTimeout(() =>{ sendTextMessage(senderID, "คุณสามารถพิมพ์ !list เพื่อตรวจเช็ครายชื่อ Channel ที่คุณติดตาม") },2000)
           firebase.database().ref('users/'+userData.id).update({
-            follower : [messageText]//.push(messageText)
+            follower : [].push(messageText)
           })
         }else{ sendTextMessage(userID, "Error นะจ๊ะ") }
       //sendTextMessage(sender, res.data.main.temp - 273)
