@@ -33,6 +33,13 @@ var userInfo = [];
     console.log(userInfo);
   })
 
+  Users.on('child_removed', function(snapshot){
+    var item = snapshot.val();
+    item.id = snapshot.key;
+    userInfo.push(item);
+    console.log(userInfo);
+  })
+
 app.use(bodyParser.json())
 app.set('port', (process.env.PORT || 4000))
 app.use(bodyParser.urlencoded({extended: false}))
