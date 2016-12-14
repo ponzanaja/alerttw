@@ -205,7 +205,7 @@ function addChannel (senderID,messageText){
           firebase.database().ref('users/'+userData.id).update({
             follower : [messageText]//.push(messageText)
           })
-        }else{ (sendTextMessage(sender, "Error"+res.data.status) }
+        }else{ sendTextMessage(userID, "Error นะจ๊ะ") }
       //sendTextMessage(sender, res.data.main.temp - 273)
   })
 }
