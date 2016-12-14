@@ -2,6 +2,7 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
 var firebase = require('firebase');
+const axios = require('axios')
 var app = express()
 const key = 'EAAC3DSTTyCMBAPcOlfjovZCs8oZBWqDAnU46eTLaDNxtcCNg8jfvpcHZCSw3C0fBxbjGptu7zc9wuGKBVsK7n3L43Uves1k6tqhkT4YqnrpWbtVNEQGwhwFWIUOHjKZCZBuheNoMqfACA7A7L5NJ3OJZCfsoXKNdz7qKtguHsLFgZDZD'
 var config = {
@@ -26,6 +27,11 @@ app.use(bodyParser.json())
 app.set('port', (process.env.PORT || 4000))
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
+
+/*axios.get('http://api.openweathermap.org/data/2.5/weather?q=' + text + '&APPID=7fee5476cbd1705fb181c28e20c473b7').then(function (res) {
+         console.log(res.data.main.temp)
+         sendTextMessage(sender, res.data.main.temp - 273)
+})*/
 
 app.get('/webhook', function(req, res) {
 
