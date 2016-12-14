@@ -181,8 +181,8 @@ function addUser(userID) {
 }
 
 function addChannel (senderID){
-    /*sendTextMessage(senderID,"ใส่ช่อง ที่ต้องการ")
-    var user = userInfo.find(user => user.UID === senderID)
+    sendTextMessage(senderID,"ใส่ช่อง ที่ต้องการ")
+    /*var user = userInfo.find(user => user.UID === senderID)
     firebase.database().ref('users/'+user.id).update({
       state :"2"
     })
