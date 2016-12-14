@@ -164,18 +164,20 @@ function addUser(userID) {
   var x = userInfo.find(user => user.UID === userID)
     //x.follower[0]
     if(x){
-      sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว !! ");
-      sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม");
-      sendTextMessage(userID, "โปรดพิมพ์ \"addlist\" เพื่อเพิ่มชื่อช่องที่ต้องการติดตาม");
+      //setTimeout(,1000);
+      setTimeout(sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว !! "),1000);
+      setTimeout(sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม <3"),2000);
+      setTimeout(sendTextMessage(userID, "โปรดพิมพ์ \"addlist\" เพื่อเพิ่มชื่อช่องที่ต้องการติดตาม"),3000);
+
       }else{
               var data = {
                         UID : userID,
                         follower : [" "],
-                        state : "1"
+                        state : "2"
                       }
     Users.push(data)
-    setTimeout(sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว :D "),3000);
-    setTimeout(sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม"),4000);
+    setTimeout(sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว :D "),1000);
+    setTimeout(sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม"),2000);
   }
 
 }
