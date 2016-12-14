@@ -183,7 +183,7 @@ function addUser(userID) {
       }else{
               var data = {
                         UID : userID,
-                        follower : [],
+                        follower : [name:"",live :false],
                         state : "1"
 
                       }
