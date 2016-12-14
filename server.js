@@ -196,8 +196,8 @@ function addUser(userID) {
 function addChannel (senderID,messageText){
     sendTextMessage(senderID,"ใส่ช่อง ที่ต้องการ")
      var userData = userInfo.find(user => user.UID === senderID)
-     var x = userData.follower
-     console.log(x);
+     var follow = userData.follower
+
 
 
 
@@ -206,10 +206,11 @@ function addChannel (senderID,messageText){
     .then(function (res) {
       console.log(res.data)
         if(res.data.status !== 404){
+          follow.push(messageText)
           setTimeout(() =>{ sendTextMessage(senderID, "คุณได้เพิ่ม Channel "+messageText+" เป็นที่เรียบร้อยแล้ว") },1000)
           setTimeout(() =>{ sendTextMessage(senderID, "คุณสามารถพิมพ์ !list เพื่อตรวจเช็ครายชื่อ Channel ที่คุณติดตาม") },2000)
           firebase.database().ref('users/'+userData.id).update({
-            follower : ["อิอิ",messageText]
+            follower : follow
           })
         }else{ sendTextMessage(userID, "Error นะจ๊ะ") }
       //sendTextMessage(sender, res.data.main.temp - 273)
