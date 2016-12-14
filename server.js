@@ -171,7 +171,7 @@ function addUser(userID) {
               var data = {
                         UID : userID,
                         follower : [" "],
-                        state : "2"
+                        state : "1"
                       }
     Users.push(data)
     setTimeout(sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว :D "),3000);
