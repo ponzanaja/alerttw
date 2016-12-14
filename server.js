@@ -196,8 +196,8 @@ function addUser(userID) {
 function addChannel (senderID,messageText){
     sendTextMessage(senderID,"ใส่ช่อง ที่ต้องการ")
     var userData = userInfo.find(user => user.UID === senderID)
-    var cat[]
-    cat.push(messageText)
+    //var cat = []
+    //cat.push(messageText)
     axios.get('https://api.twitch.tv/kraken/channels/'+messageText+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
     .then(function (res) {
       console.log(res.data)
@@ -206,7 +206,7 @@ function addChannel (senderID,messageText){
           setTimeout(() =>{ sendTextMessage(senderID, "คุณสามารถพิมพ์ !list เพื่อตรวจเช็ครายชื่อ Channel ที่คุณติดตาม") },2000)
           firebase.database().ref('users/'+userData.id).update({
 
-            follower : [].push(cat)
+            follower : push(messageText)
           })
         }else{ sendTextMessage(userID, "Error นะจ๊ะ") }
       //sendTextMessage(sender, res.data.main.temp - 273)
