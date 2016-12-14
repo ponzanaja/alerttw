@@ -208,8 +208,8 @@ function addChannel (senderID,messageText){
      var liveCheck = userData.live
     axios.get('https://api.twitch.tv/kraken/channels/'+messageText+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
     .then(function (res) {
-      console.log(res.data)
-        if(res.data.status != 404){
+      console.log(res.status)
+        if(res.status == 200){
           let data = {
             name : messageText,
             live : false,
