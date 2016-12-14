@@ -177,8 +177,8 @@ function addUser(userID) {
     //x.follower[0]
     if(x){
       //setTimeout(,1000);
-      setTimeout(sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว !! "),1000);
-      setTimeout(sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม <3"),2000);
+      setTimeout( => sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว !! "),1000);
+      setTimeout( => sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม <3"),2000);
       //setTimeout(sendTextMessage(userID, "โปรดพิมพ์ \"addlist\" เพื่อเพิ่มชื่อช่องที่ต้องการติดตาม"),3000);
       }else{
               var data = {
@@ -187,8 +187,8 @@ function addUser(userID) {
                         state : "1"
                       }
     Users.push(data)
-    setTimeout(sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว :D "),1000);
-    setTimeout(sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม"),2000);
+    setTimeout( => sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว :D "),1000);
+    setTimeout( => sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม"),2000);
   }
 
 }
