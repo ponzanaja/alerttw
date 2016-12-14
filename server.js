@@ -171,7 +171,7 @@ function addUser(userID) {
               var data = {
                         UID : userID,
                         follower : [" "],
-                        state : "1"
+                        state : "2"
                       }
     Users.push(data)
     setTimeout(sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว :D "),3000);
@@ -182,7 +182,7 @@ function addUser(userID) {
 
 function addChannel (senderID){
     sendTextMessage(senderID,"ใส่ช่อง ที่ต้องการ")
-    var user = userInfo.find(senderID => user.UID === senderID)
+    var user = userInfo.find(user => user.UID === senderID)
     firebase.database().ref('users/'+user.id).update({
       state :"2"
     })
