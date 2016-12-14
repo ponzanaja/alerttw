@@ -26,6 +26,13 @@ var userInfo = [];
       console.log(userInfo);
   });
 
+  Users.on('child_changed', function(snapshot){
+    var item = snapshot.val();
+    item.id = snapshot.key;
+    userInfo.push(item);
+    console.log(userInfo);
+  })
+
 app.use(bodyParser.json())
 app.set('port', (process.env.PORT || 4000))
 app.use(bodyParser.urlencoded({extended: false}))
@@ -91,7 +98,6 @@ function receivedMessage(event) {
 
   if (messageText) {
       if (messageText === 'hello') {
-          //sendTextMessage(senderID, "ควยเอ้ย ไม่รู้ request");
           sendTextMessage(senderID, "Welcome to my bots Have take a look");
         }else if (messageText == 'about') {
                   sendTextMessage(senderID, "This bot created by Wipoo suvunnasan");
@@ -100,7 +106,13 @@ function receivedMessage(event) {
                       }else if (messageText == 'addlist') {
                           addChannel(senderID)
                     }else{
-                      sendTextMessage(senderID, "Your entered wrong Keywords Please try : hello , about , subscript");
+                      let x = userInfo.find(user => user.UID === senderID)
+                      if(!x){
+                        sendTextMessage(senderID, "Your entered wrong Keywords Please try : hello , about , subscript");
+                      }else if (x) {
+                        addChannel(senderID,messageText)
+                      }
+
     }
 
     // If we receive a text message, check to see if it matches a keyword
@@ -167,13 +179,12 @@ function addUser(userID) {
       //setTimeout(,1000);
       setTimeout(sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกไปแล้ว !! "),1000);
       setTimeout(sendTextMessage(userID, "กรุณากรอก Channel ที่คุณต้องการจะติดตาม <3"),2000);
-      setTimeout(sendTextMessage(userID, "โปรดพิมพ์ \"addlist\" เพื่อเพิ่มชื่อช่องที่ต้องการติดตาม"),3000);
-
+      //setTimeout(sendTextMessage(userID, "โปรดพิมพ์ \"addlist\" เพื่อเพิ่มชื่อช่องที่ต้องการติดตาม"),3000);
       }else{
               var data = {
                         UID : userID,
                         follower : [" "],
-                        state : "2"
+                        state : "1"
                       }
     Users.push(data)
     setTimeout(sendTextMessage(userID, "คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว :D "),1000);
@@ -182,21 +193,23 @@ function addUser(userID) {
 
 }
 
-function addChannel (senderID){
+function addChannel (senderID,messageText){
     sendTextMessage(senderID,"ใส่ช่อง ที่ต้องการ")
     var userData = userInfo.find(user => user.UID === senderID)
-    firebase.database().ref('users/'+userData.id).update({
-      state :"2"
-    })
 
-    /*axios.get('https://api.twitch.tv/kraken/channels/porpengay/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
+    axios.get('https://api.twitch.tv/kraken/channels/'+messageText+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
     .then(function (res) {
       console.log(res.data)
+        if(res.data.status !== 404){
+          setTimeout(sendTextMessage(sender, "คุณได้เพิ่ม Channel "+messageText+" เป็นที่เรียบร้อยแล้ว"),1000)
+          setTimeout(sendTextMessage(sender, "คุณสามารถพิมพ์ !list เพื่อตรวจเช็ครายชื่อ Channel ที่คุณติดตาม"),2000)
+          firebase.database().ref('users/'+userData.id).update({
+            follower : [messageText]//.push(messageText)
+          })
+        }
       //sendTextMessage(sender, res.data.main.temp - 273)
-  })*/
+  })
 }
-
-
 
 
 app.listen(app.get('port'), function () {
