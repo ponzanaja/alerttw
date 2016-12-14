@@ -189,7 +189,7 @@ function addChannel (senderID){
     axios.get('https://api.twitch.tv/kraken/channels/porpengay/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
     .then(function (res) {
       console.log(res.data)
-      sendTextMessage(sender, res.data.main.temp - 273)
+      //sendTextMessage(sender, res.data.main.temp - 273)
   })
 }
 
