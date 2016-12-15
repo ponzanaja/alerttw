@@ -245,7 +245,9 @@ function addChannel (senderID, messageText) {
 
 function checkList () {
   console.log('checking status')
+
 userInfo.forEach( function (data,index) {
+  console.log(index)
   data.follower.forEach( function (follow, index2) {
     axios.get('https://api.twitch.tv/kraken/streams/'+follow.name+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
     .then( function (res){
