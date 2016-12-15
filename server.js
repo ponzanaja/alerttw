@@ -260,7 +260,7 @@ userInfo.forEach( function (data,index) {
            send: false
         }
 
-         firebase.database().ref('users/' + data2.id +'/follower['+index2+']').update({
+         firebase.database().ref('users/' + data.id +'/follower['+index2+']').update({
            data2
       })
       }
