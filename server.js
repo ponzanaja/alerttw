@@ -250,7 +250,6 @@ userInfo.forEach( function (data,index) {
     console.log(get.name)
   })
   console.log(index)
-  console.log(data.follower[index].name)
   axios.get('https://api.twitch.tv/kraken/streams/'+data.follower.name+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
   .then( function (res){
     if (res.data.stream !== null) {
