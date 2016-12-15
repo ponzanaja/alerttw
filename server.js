@@ -264,6 +264,8 @@ userInfo.forEach( function (data,index) {
       else {
         console.log('offline')
       }
+    }).catch( function(err){
+        console.log(err)
     })
   })
 
