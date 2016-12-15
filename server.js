@@ -253,6 +253,7 @@ userInfo.forEach( function (data,index) {
           live: true,
           send: false
         }
+        console.log(data);
       firebase.database().ref('users/' + userInfo.data.id).update({
         follower : data
       })
