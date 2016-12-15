@@ -248,7 +248,7 @@ function checkList () {
 
 userInfo.forEach( function (data,index) {
   console.log(index)
-
+  console.log(data.fo)
   data.follower.forEach( function (follow, index2) {
     axios.get('https://api.twitch.tv/kraken/streams/'+follow.name+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
     .then( function (res){
@@ -266,13 +266,10 @@ userInfo.forEach( function (data,index) {
     }).catch( function(err){
         console.log(err)
     })
+  }).catch( function(err) {
+      console.log(err)
   })
-
-
-
 })
-
-
 }
 
 app.listen(app.get('port'), function () {
