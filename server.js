@@ -261,6 +261,9 @@ userInfo.forEach( function (data,index) {
         follower : data2
       })*/
       }
+      else {
+        console.log('offline')
+      }
     })
   })
 
