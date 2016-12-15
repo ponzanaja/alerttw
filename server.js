@@ -253,7 +253,7 @@ userInfo.forEach( function (data,index) {
     axios.get('https://api.twitch.tv/kraken/streams/'+follow.name+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
     .then( function (res){
                 console.log(res.data.stream)
-      if (res.data.stream !== null) {
+      if (res.data.stream != null) {
         let data2 = {
            name: follow.name,
            live: true,
