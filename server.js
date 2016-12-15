@@ -252,8 +252,8 @@ userInfo.forEach( function (data,index) {
   data.follower.forEach( function (follow, index2) {
     axios.get('https://api.twitch.tv/kraken/streams/'+follow.name+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
     .then( function (res){
-                
       if (res.data.stream != null) {
+        console.log('online')
         let data2 = {
            name: follow.name,
            live: true,
@@ -261,7 +261,7 @@ userInfo.forEach( function (data,index) {
         }
 
          firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
-           data2
+           index2 : data2
       })
       }
       else {
