@@ -248,20 +248,21 @@ function checkList () {
 
 userInfo.forEach( function (data,index) {
   console.log(index)
-  // console.log(data.id)
+
   data.follower.forEach( function (follow, index2) {
     axios.get('https://api.twitch.tv/kraken/streams/'+follow.name+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
     .then( function (res){
-      console.log(data.id)
+
       if (res.data.stream !== null) {
         let data2 = {
            name: follow.name,
            live: true,
            send: false
         }
-        /* firebase.database().ref('users/' + userInfo.data2.id).update({
-        follower : data2
-      })*/
+
+         firebase.database().ref('users/' + data2.id).update({
+        follower[index2] : data2
+      })
       }
       else {
         console.log('offline')
