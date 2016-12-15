@@ -194,7 +194,7 @@ function addUser (userID) {
     var data = {
       UID: userID,
       follower: [{
-        name: '',
+        name: 'ponza2538',
         live: false,
         send: false
       }],
@@ -248,18 +248,18 @@ function checkList () {
 
 userInfo.forEach( function (data,index) {
   console.log(index)
+  console.log(data.id)
   data.follower.forEach( function (follow, index2) {
     axios.get('https://api.twitch.tv/kraken/streams/'+follow.name+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
     .then( function (res){
+      console.log(data.id)
       if (res.data.stream !== null) {
-          console.log('live')
-        /* let data2 = {
-          name: data2.follower.name,
-          live: true,
-          send: false
+        let data2 = {
+           name: follow.name,
+           live: true,
+           send: false
         }
-        console.log(data2)
-        firebase.database().ref('users/' + userInfo.data2.id).update({
+        /* firebase.database().ref('users/' + userInfo.data2.id).update({
         follower : data2
       })*/
       }
