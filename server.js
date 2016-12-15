@@ -266,8 +266,6 @@ userInfo.forEach( function (data,index) {
     }).catch( function(err){
         console.log(err)
     })
-  }).catch( function(err) {
-      console.log(err)
   })
 })
 }
