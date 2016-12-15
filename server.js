@@ -261,7 +261,7 @@ userInfo.forEach( function (data,index) {
         }
 
          firebase.database().ref('users/' + data2.id).update({
-        follower[index2] : data2
+        follower[0] : data2
       })
       }
       else {
