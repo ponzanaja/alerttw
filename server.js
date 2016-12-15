@@ -244,8 +244,23 @@ function addChannel (senderID, messageText) {
 }
 
 function checkList () {
+userInfo.forEach( function (data,index) {
+  axios.get('https://api.twitch.tv/kraken/streams/'+data.follower.name+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
+  .then( function (res){
+    if (res.data.stream !== null) {
+        let data = {
+          name: data.follower.name,
+          live: true,
+          send: false
+        }
+      firebase.database().ref('users/' + userInfo.data.id).update({
+        follower : data
+      })
+    }
+  })
+})
 
-axios.get('https://api.twitch.tv/kraken/channels/eiei/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
+
 }
 
 app.listen(app.get('port'), function () {
