@@ -24,7 +24,7 @@ Users.on('child_added', function (snapshot) {
   item.id = snapshot.key
   userInfo.push(item)
   console.log(userInfo)
-}).then(checkList())
+})
 
 Users.on('child_changed', function (snapshot) {
   var item = snapshot.val()
@@ -39,7 +39,9 @@ Users.on('child_removed', function (snapshot) {
   userInfo.push(item)
   console.log(userInfo)
 })
-
+setTimeout(() => {
+  checkList()
+}, 10000)
 
 app.use(bodyParser.json())
 app.set('port', (process.env.PORT || 4000))
