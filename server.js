@@ -254,14 +254,10 @@ userInfo.forEach( function (data,index) {
     .then( function (res){
       if (res.data.stream != null) {
         console.log('online')
-        let data2 = {
+         firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
            name: follow.name,
            live: true,
            send: false
-        }
-
-         firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
-           index2 : data2
       })
       }
       else {
