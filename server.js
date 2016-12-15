@@ -246,17 +246,19 @@ function addChannel (senderID, messageText) {
 function checkList () {
   console.log('checking status')
 userInfo.forEach( function (data,index) {
+  console.log(index)
+  console.log(data)
   axios.get('https://api.twitch.tv/kraken/streams/'+data.follower.name+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
   .then( function (res){
     if (res.data.stream !== null) {
-        let data = {
-          name: data.follower.name,
+        let data2 = {
+          name: data2.follower.name,
           live: true,
           send: false
         }
-        console.log(data);
-      firebase.database().ref('users/' + userInfo.data.id).update({
-        follower : data
+        console.log(data2);
+      firebase.database().ref('users/' + userInfo.data2.id).update({
+        follower : data2
       })
     }
   })
