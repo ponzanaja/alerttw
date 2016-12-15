@@ -39,7 +39,7 @@ Users.on('child_removed', function (snapshot) {
   userInfo.push(item)
   console.log(userInfo)
 })
-setTimeout(() => {
+setInterval(() => {
   checkList()
 }, 10000)
 
