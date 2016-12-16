@@ -256,13 +256,15 @@ userInfo.forEach( function (data,index) {
       if (res.data.stream != null) {
         console.log('online')
          firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
-           name: follow.name,
            live: true,
-           send: false
       })
       }
       else {
         console.log('offline')
+        firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
+          live: false,
+          send: false
+     })
       }
     }).catch( function(err){
         console.log(err)
@@ -279,10 +281,9 @@ userInfo.forEach( function (data,index) {
     if(data.follower.live && !data.follow.send){
         sendTextMessage(data.UID,'ช่อง '+data.follower.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
         firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
-          name: follow.name,
-          live: true,
           send: true
      })
+     console.log('send message already')
     }
 
   })
