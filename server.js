@@ -262,30 +262,31 @@ function addChannel (senderID, messageText) {
 
 function checkList () {
 //  console.log('checking status')
-
-userInfo.forEach( function (data,index) {
-  console.log(index)
-  data.follower.forEach( function (follow, index2) {
-    axios.get('https://api.twitch.tv/kraken/streams/'+follow.name+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
-    .then( function (res){
-      if (res.data.stream != null) {
-      //  console.log('online')
-         firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
-           live: true,
+  if(userInfo){
+  userInfo.forEach( function (data,index) {
+    console.log(index)
+    data.follower.forEach( function (follow, index2) {
+      axios.get('https://api.twitch.tv/kraken/streams/'+follow.name+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
+      .then( function (res){
+        if (res.data.stream != null) {
+        //  console.log('online')
+           firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
+             live: true,
+        })
+        }
+        else {
+          //console.log('offline')
+          firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
+            live: false,
+            send: false
+       })
+        }
+      }).catch( function(err){
+          console.log(err)
       })
-      }
-      else {
-        //console.log('offline')
-        firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
-          live: false,
-          send: false
-     })
-      }
-    }).catch( function(err){
-        console.log(err)
     })
   })
-})
+  }
 }
 
 function checkSend () {
