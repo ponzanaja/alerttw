@@ -271,12 +271,16 @@ function checkList () {
         if (res.data.stream != null) {
         //  console.log('online')
            firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
+             name : follow.name,
              live: true,
+             send: false
+
         })
         }
         else {
           //console.log('offline')
           firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
+            name : follow.name,
             live: false,
             send: false
        })
