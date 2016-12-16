@@ -27,16 +27,16 @@ Users.on('child_added', function (snapshot) {
 })
 
 Users.on('child_changed', function (snapshot) {
-  var item = snapshot.val()
-  item.id = snapshot.key
-  userInfo.push(item)
-  console.log(userInfo)
+  var id = snapshot.key
+  var index = userInfo.findIndex(user => user.id === id)
+  userInfo[index] = snapshot.val()
+  console.log( ' CHANGE userInfo \n ' + userInfo)
 })
 
 Users.on('child_removed', function (snapshot) {
-  var item = snapshot.val()
-  item.id = snapshot.key
-  userInfo.push(item)
+    var id = snapshot.key
+    var index = userInfo.findIndex(user => user.id === id)
+     userInfo.splice(index,1)
   console.log(userInfo)
 })
 setInterval(() => {
