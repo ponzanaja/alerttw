@@ -335,7 +335,7 @@ function showList (senderID) {
 
 function deleteChannel (senderID, messageText){
   var userIn = userInfo.find(user => user.UID === senderID)
-    console.log(userIn.find(user => user.follower.name === messageText))
+    console.log(userIn)
 
   firebase.database().ref('users/' +userIn.id+'/follower/').remove()
 }
