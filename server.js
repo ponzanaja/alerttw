@@ -113,7 +113,8 @@ function receivedMessage (event) {
 
   if (messageText) {
     if (messageText === 'hello') {
-      sendTextMessage(senderID, sendGenericMessage(senderID))
+      sendGenericMessage(senderID)
+      //sendTextMessage(senderID, )
       // 'Welcome to my bots Have take a look you can try "subscript" '
     }
     else if (messageText === 'about') {
