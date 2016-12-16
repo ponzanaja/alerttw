@@ -28,8 +28,10 @@ Users.on('child_added', function (snapshot) {
 
 Users.on('child_changed', function (snapshot) {
   var id = snapshot.key
-  var index = userInfo.findIndex(user => user.id === id)
-  userInfo[index] = snapshot.val()
+  var User = Users.find(user => user.id === id)
+  User.UID = snapshot.val().UID
+  User.follower = snapshot.val().follower
+  User.state = snapshot.val().state
   console.log( ' CHANGE userInfo \n ' + userInfo)
 })
 
@@ -280,8 +282,8 @@ userInfo.forEach( function (data,index) {
   data.follower.forEach( function (follow,index2) {
       //console.log('process sending status phase2 :'+index)
       //console.log(data.UID)
-      console.log('live'+follow.live)
-      console.log('send'+follow.send)
+      console.log('live '+follow.live)
+      console.log('send '+follow.send)
     if(follow.live && !follow.send){
       sendTextMessage(data.UID,'ช่อง '+follow.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
         firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
