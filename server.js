@@ -96,8 +96,8 @@ function receivedMessage (event) {
   var timeOfMessage = event.timestamp
   var message = event.message
 
-  console.log('Received message for user %d and page %d at %d with message:',
-        senderID, recipientID, timeOfMessage)
+  console.log('Received message for user %d and page %d at %d with message:')
+        //,senderID, recipientID, timeOfMessage)
   console.log(JSON.stringify(message))
 
   var messageId = message.mid
@@ -129,9 +129,16 @@ function receivedMessage (event) {
         sendTextMessage(senderID, 'Your entered wrong Keywords Please try : hello , about , subscript')
       }
       else if (x) {
-          addChannel(senderID, messageText)
+            let temp = messageText.slice(0,1)
+            if(temp === '!'){
+              deleteChannel(senderID, messageText)
+            }
+            else {
+              addChannel(senderID, messageText)
+            }
+
       }else {
-        deleteChannel(senderID, messageText)
+
       }
     }
         // If we receive a text message, check to see if it matches a keyword
@@ -320,12 +327,18 @@ function showList (senderID) {
 
 
     var userIn = userInfo.find(user => user.UID === senderID)
-    setTimeout(() => {
+    if(true){
       userIn.follower.forEach( function (data,index){
           sendTextMessage(senderID,' '+data.name+'\n')
         })
         sendTextMessage(senderID,'คุณสามารถลบ Channel ที่ไม่ต้องการได้โดยการพิมพ์ชื่อ ![ชื่อที่ต้องการลบ] เช่น !eiei')
-    }, 0)
+    }
+    /*setTimeout(() => {
+    userIn.follower.forEach( function (data,index){
+        sendTextMessage(senderID,' '+data.name+'\n')
+      })
+      sendTextMessage(senderID,'คุณสามารถลบ Channel ที่ไม่ต้องการได้โดยการพิมพ์ชื่อ ![ชื่อที่ต้องการลบ] เช่น !eiei')
+    }, 0)*/
 
 
 
