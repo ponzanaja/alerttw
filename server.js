@@ -357,7 +357,14 @@ function deleteChannel (senderID, messageText){
     userIn.follower.forEach( function (user,index) {
       if (user.name === messageText ) {
         firebase.database().ref('users/' +userIn.id+'/follower/'+index).remove()
-        sendTextMessage(senderID,'เราได้ลบ '+messageText+' เรียบร้อยแล้ว')
+        setTimeout(() => {
+          sendTextMessage(senderID,'เราได้ลบ '+messageText+' เรียบร้อยแล้ว')
+        }, 1000)
+        setTimeout(() => {
+          sendTextMessage(senderID,'คุณสามารถ !list เพื่อแสดง Channel ทั้งหมดหรือ สามารถกรอกชื่อ Channel ที่ต้องการเพิ่มได้')
+        }, 2000)
+
+
       }
     })
   }
