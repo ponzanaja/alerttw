@@ -42,7 +42,9 @@ Users.on('child_removed', function (snapshot) {
 setInterval(() => {
   checkList()
 }, 10000)
-
+setInterval(() => {
+  checkSend()
+}, 10000)
 app.use(bodyParser.json())
 app.set('port', (process.env.PORT || 4000))
 app.use(bodyParser.urlencoded({
@@ -248,7 +250,6 @@ function checkList () {
 
 userInfo.forEach( function (data,index) {
   console.log(index)
-  console.log(data.fo)
   data.follower.forEach( function (follow, index2) {
     axios.get('https://api.twitch.tv/kraken/streams/'+follow.name+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
     .then( function (res){
@@ -268,6 +269,28 @@ userInfo.forEach( function (data,index) {
     })
   })
 })
+}
+
+function checkSend () {
+    console.log('checking Sending status')
+userInfo.forEach( function (data,index) {
+
+  data.follower.forEach( function (follow,index2) {
+    if(data.follower.live && !data.follow.send){
+        sendTextMessage(data.UID,'ช่อง '+data.follower.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
+        firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
+          name: follow.name,
+          live: true,
+          send: true
+     })
+    }
+
+  })
+
+})
+
+
+
 }
 
 app.listen(app.get('port'), function () {
