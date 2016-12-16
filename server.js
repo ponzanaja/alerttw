@@ -348,12 +348,12 @@ function deleteChannel (senderID, messageText){
   console.log(messageText)
   var userIn = userInfo.find(user => user.UID === senderID)
   console.log(userIn)
-  if(veri){
+  /*if(veri){
   firebase.database().ref('users/' +userIn.id+'/follower/'+messageText).remove()
   sendTextMessage(senderID,'เราได้ลบ '+messageText+' เรียบร้อยแล้ว')
 }else {
   sendTextMessage(senderID,'คุณกรอก Channel ที่ต้องการลบ ผิด')
-}
+}*/
 }
 
 app.listen(app.get('port'), function () {
