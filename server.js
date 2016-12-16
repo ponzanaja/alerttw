@@ -13,11 +13,11 @@ var config = {
   messagingSenderId: '49200232033'
 }
 
-// setInterval(function(){sendTextMessage('939326652838978', 'This was send at'+ Date.now()) }, 60000)
+
 
 firebase.initializeApp(config)
 var Users = firebase.database().ref('users')
-    // var x = users.find(user => user.UID === id)
+
 var userInfo = []
 Users.on('child_added', function (snapshot) {
   var item = snapshot.val()
@@ -53,10 +53,7 @@ app.use(bodyParser.urlencoded({
   extended: false
 }))
 app.use(bodyParser.json())
-/* axios.get('http://api.openweathermap.org/data/2.5/weather?q=' + text + '&APPID=7fee5476cbd1705fb181c28e20c473b7').then(function (res) {
-         console.log(res.data.main.temp)
-         sendTextMessage(senderID, res.data.main.temp - 273)
-}) */
+
 app.get('/webhook', function (req, res) {
   if (req.query['hub.verify_token'] === key) {
     res.send(req.query['hub.challenge'])
@@ -110,9 +107,8 @@ function receivedMessage (event) {
 
   if (messageText) {
     if (messageText === 'hello') {
-      sendGenericMessage(senderID)
-      //sendTextMessage(senderID, )
-      // 'Welcome to my bots Have take a look you can try "subscript" '
+
+
     }
     else if (messageText === 'about') {
       sendTextMessage(senderID, 'This bot created by Wipoo suvunnasan')
@@ -129,11 +125,11 @@ function receivedMessage (event) {
       showList(senderID)
     }
     else {
-      let x = userInfo.find(user => user.UID === senderID)
-      if (!x) {
+      let userIn = userInfo.find(user => user.UID === senderID)
+      if (!userIn) {
         sendTextMessage(senderID, 'Your entered wrong Keywords Please try : hello , about , subscript')
       }
-      else if (x) {
+      else if (userIn) {
             let temp = messageText.slice(0,1)
             let temp2 = messageText.slice(1)
             if(temp === '!'){
@@ -163,8 +159,8 @@ function receivedPostback(event) {
   // button for Structured Messages.
   var payload = event.postback.payload;
 
-  console.log("Received postback for user %d and page %d with payload '%s' " +
-    "at %d", senderID, recipientID, payload, timeOfPostback);
+  console.log('Received postback for user %d and page %d with payload "%s" ' +
+    'at %d', senderID, recipientID, payload, timeOfPostback);
 
   // When a postback is called, we'll send a message back to the sender to
   // let them know it was successful
@@ -176,7 +172,6 @@ function receivedPostback(event) {
   }
 }
 
-
 function sendTextMessage (recipientId, messageText) {
   var messageData = {
     recipient: {
@@ -186,7 +181,6 @@ function sendTextMessage (recipientId, messageText) {
       text: messageText
     }
   }
-
   callSendAPI(messageData)
 }
 
@@ -278,7 +272,7 @@ function addChannel (senderID, messageText) {
 }
 
 function checkList () {
-//  console.log('checking status')
+
   if(userInfo){
   userInfo.forEach( function (data,index) {
     console.log(index)
@@ -286,13 +280,12 @@ function checkList () {
       axios.get('https://api.twitch.tv/kraken/streams/'+follow.name+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
       .then( function (res){
         if (res.data.stream != null) {
-        //  console.log('online')
+
            firebase.database().ref('users/' + data.id +'/follower/'+index2+'/live').update({
              live: true
         })
         }
         else {
-          //console.log('offline')
           firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
             name: follow.name,
             live: false,
@@ -310,23 +303,14 @@ function checkList () {
 function checkSend () {
 
 
-
-  //  console.log('checking Sending status')
-    //sendTextMessage("939326652838978","ควยยยยยยยยยยยยยยยยยย")
 userInfo.forEach( function (data,index) {
-    //console.log('process sending status: '+index)
+
   data.follower.forEach( function (follow,index2) {
-      //console.log('process sending status phase2 :'+index)
-      //console.log(data.UID)
-      //console.log('live '+follow.live)
-    //  console.log('send '+follow.send)
     if(follow.live && !follow.send){
       axios.get('https://api.twitch.tv/kraken/channels/'+follow.name+'?client_id=l13ikftl5r75akwu350wqebougu9i1m')
       .then( function (res){
         sendLiveTwitch(data.UID,follow.name,res.data.logo,res.data.game)
       })
-
-
       /*setTimeout(() => {
         sendTextMessage(data.UID,'ช่อง '+follow.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
       }, 1000)
@@ -411,50 +395,42 @@ function sendWelcome(recipientId) {
           template_type: 'button',
           text: 'ยินดีต้อนรับสู่ Alert Twitch คุณสามารถเริ่มใช้งานได้โดยการเลือก \n subscript ถ้ามีข้อสงสัยสามารถพิมพ์ help',
           buttons:[{
-            type: "postback",
-            title: "subscript",
-            payload: "subscript"
+            type: 'postback',
+            title: 'subscript',
+            payload: 'subscript'
           }, {
-            type: "web_url",
-            url: "goo.gl/H7oDuZ",
-            title: "help"
+            type: 'web_url',
+            url: 'goo.gl/H7oDuZ',
+            title: 'help'
           }]
         }
       }
-}
+    }
   }
   callSendAPI(messageData)
-      }
+}
 
-
-
-
-function sendGenericMessage(recipientId) {
+function sendLiveTwitch(recipientId,chName,img,game) {
   var messageData = {
     recipient: {
       id: recipientId
     },
     message:{
     attachment:{
-      type:"template",
+      type:'template',
       payload:{
-        template_type:"generic",
+        template_type:'generic',
         elements:[
           {
-            title:"Welcome to Peter\'s Hats",
-            item_url:"https://petersfancybrownhats.com",
-            image_url:"https://petersfancybrownhats.com/company_image.png",
-            subtitle:"We\'ve got the right hat for everyone.",
+            title:'ช่อง '+chName+' ที่คุณติดตาม Live แล้ว !!',
+            item_url:'https://www.twitch.tv/'+chName,
+            image_url:''+img,
+            subtitle:'Streaming Game : '+game,
             buttons:[
               {
-                type:"web_url",
-                url:"https://petersfancybrownhats.com",
-                title:"View Website"
-              },
-              {
-                type:"postback",
-                title:"Start Chatting",
-                payload:"DEVELOPER_DEFINED_PAYLOAD"
+                type:'web_url',
+                url:'https://www.twitch.tv/'+chName,
+                title:'Watch now'
               }
             ]
           }
@@ -465,58 +441,6 @@ function sendGenericMessage(recipientId) {
       }
     callSendAPI(messageData)
 }
-
-
-function sendLiveTwitch(recipientId,chName,img,game) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message:{
-    attachment:{
-      type:"template",
-      payload:{
-        template_type:"generic",
-        elements:[
-          {
-            title:"ช่อง "+chName+" ที่คุณติดตาม Live แล้ว !!",
-            item_url:"https://www.twitch.tv/"+chName,
-            image_url:""+img,
-            subtitle:"Streaming Game : "+game,
-            buttons:[
-              {
-                type:"web_url",
-                url:"https://www.twitch.tv/"+chName,
-                title:"Watch now"
-              }  
-            ]
-          }
-        ]
-      }
-    }
-  }
-      }
-    callSendAPI(messageData)
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 app.listen(app.get('port'), function () {
   console.log('run at port', app.get('port'))

@@ -1,7 +1,8 @@
 {
   "name": "AlertTwitch",
-  "version": "1.9.8",
-  "description": "",
+  "version": "2.1.4",
+  "description": "This Project made for study and learning",
+  "author": "Ponzanaja",
   "main": "server.js",
   "dependencies": {
     "body-parser": "^1.15.2",
