@@ -57,7 +57,6 @@ app.use(bodyParser.json())
          console.log(res.data.main.temp)
          sendTextMessage(senderID, res.data.main.temp - 273)
 }) */
-
 app.get('/webhook', function (req, res) {
   if (req.query['hub.verify_token'] === key) {
     res.send(req.query['hub.challenge'])
@@ -114,7 +113,8 @@ function receivedMessage (event) {
 
   if (messageText) {
     if (messageText === 'hello') {
-      sendTextMessage(senderID, 'Welcome to my bots Have take a look you can try "subscript" ')
+      sendTextMessage(senderID, sendGenericMessage(senderID))
+      // 'Welcome to my bots Have take a look you can try "subscript" '
     }
     else if (messageText === 'about') {
       sendTextMessage(senderID, 'This bot created by Wipoo suvunnasan')
@@ -144,29 +144,59 @@ function receivedMessage (event) {
             else {
               addChannel(senderID, messageText)
             }
-
       }else {
 
       }
     }
-
         // If we receive a text message, check to see if it matches a keyword
         // and send back the example. Otherwise, just echo the text we received.
-        /* switch (messageText) {
-          case 'generic':
-            sendGenericMessage(senderID)
-            break
-
-          default:
-            sendTextMessage(senderID, 'Your entered wrong Keywords')
-        } */
   }
   else if (messageAttachments) {
-    sendTextMessage(senderID, 'Message with attachment received')
+    sendTextMessage(senderID, 'Entered Wrong keyword')
   }
 }
-function sendGenericMessage (recipientId, messageText) {
-    // To be expanded in later sections
+function sendGenericMessage(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: [{
+            title: "rift",
+            subtitle: "Next-generation virtual reality",
+            item_url: "https://www.oculus.com/en-us/rift/",
+            image_url: SERVER_URL + "/assets/rift.png",
+            buttons: [{
+              type: "web_url",
+              url: "https://www.oculus.com/en-us/rift/",
+              title: "Open Web URL"
+            }, {
+              type: "postback",
+              title: "Call Postback",
+              payload: "Payload for first bubble",
+            }],
+          }, {
+            title: "touch",
+            subtitle: "Your Hands, Now in VR",
+            item_url: "https://www.oculus.com/en-us/touch/",
+            image_url: SERVER_URL + "/assets/touch.png",
+            buttons: [{
+              type: "web_url",
+              url: "https://www.oculus.com/en-us/touch/",
+              title: "Open Web URL"
+            }, {
+              type: "postback",
+              title: "Call Postback",
+              payload: "Payload for second bubble",
+            }]
+          }]
+        }
+      }
+    }
 }
 function sendTextMessage (recipientId, messageText) {
   var messageData = {
