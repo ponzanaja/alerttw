@@ -130,6 +130,8 @@ function receivedMessage (event) {
       }
       else if (x) {
           addChannel(senderID, messageText)
+      }else {
+        deleteChannel(senderID, messageText)
       }
     }
         // If we receive a text message, check to see if it matches a keyword
@@ -315,10 +317,18 @@ function deleteUser (senderID) {
 
 
 function showList (senderID) {
+    sendTextMessage(senderID,'คุณสามารถลบ Channel ที่ไม่ต้องการได้โดยการพิมพ์ชื่อ ![ชื่อที่ต้องการลบ] เช่น !eiei')
+
   var userIn = userInfo.find(user => user.UID === senderID)
     userIn.follower.forEach( function (data,index){
-      sendTextMessage(senderID,index+1+' '+data.name+'\n')
+      setTimeout(() => {
+        sendTextMessage(senderID,index+1+' '+data.name+'\n')
+      }, 1000*index)
     })
+}
+
+function deleteChannel (senderID, messageText){
+
 }
 
 app.listen(app.get('port'), function () {
