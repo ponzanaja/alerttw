@@ -255,7 +255,7 @@ function addChannel (senderID, messageText) {
         sendTextMessage(senderID, 'คุณได้เพิ่ม Channel ' + messageText + ' เป็นที่เรียบร้อยแล้ว')
       }, 1000)
       setTimeout(() => {
-        sendTextMessage(senderID, 'คุณสามารถพิมพ์ !list เพื่อตรวจเช็ครายชื่อ Channel ที่คุณติดตาม')
+        sendTextMessage(senderID, 'คุณสามารถพิมพ์ !list เพื่อตรวจเช็ครายชื่อ Channel ที่คุณติดตาม หรือ สามารถใส่ชื่อ Channel ที่ต้องการต่อได้เลย')
       }, 2000)
       firebase.database().ref('users/' + userData.id).update({
         follower: follow
