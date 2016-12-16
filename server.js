@@ -310,8 +310,9 @@ function deleteUser (senderID) {
   var userIn = userInfo.find(user => user.UID === senderID)
 
   firebase.database().ref('users/' +userIn.id+'').remove()
-  }
   sendTextMessage(senderID,'ขอบคุณที่ใช้งานที่ไว้วางใจใช้งาน Alert Twitch ของเรา :P ')
+  }
+
 
 function showList (senderID) {
   var userIn = userInfo.find(user = user.UID === senderID)
