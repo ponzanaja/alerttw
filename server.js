@@ -160,44 +160,35 @@ function sendGenericMessage(recipientId) {
     recipient: {
       id: recipientId
     },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: [{
-            title: "rift",
-            subtitle: "Next-generation virtual reality",
-            item_url: "https://www.oculus.com/en-us/rift/",
-            image_url:  "/assets/rift.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/rift/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for first bubble",
-            }],
-          }, {
-            title: "touch",
-            subtitle: "Your Hands, Now in VR",
-            item_url: "https://www.oculus.com/en-us/touch/",
-            image_url: "/assets/touch.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/touch/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for second bubble",
-            }]
-          }]
-        }
+    message:{
+    attachment:{
+      type:"template",
+      payload:{
+        template_type:"generic",
+        elements:[
+          {
+            title:"Welcome to Peter\'s Hats",
+            item_url:"https://petersfancybrownhats.com",
+            image_url:"https://petersfancybrownhats.com/company_image.png",
+            subtitle:"We\'ve got the right hat for everyone.",
+            buttons:[
+              {
+                type:"web_url",
+                url:"https://petersfancybrownhats.com",
+                title:"View Website"
+              },
+              {
+                type:"postback",
+                title:"Start Chatting",
+                payload:"DEVELOPER_DEFINED_PAYLOAD"
+              }
+            ]
+          }
+        ]
       }
     }
   }
+      }
 }
 function sendTextMessage (recipientId, messageText) {
   var messageData = {
