@@ -330,17 +330,13 @@ function showList (senderID) {
     userIn.follower.forEach( function (data,index){
         sendTextMessage(senderID,' '+data.name+'\n')
       })
-
-    }, 0)
-
-
-
+    }, 1000)
 }
 
 function deleteChannel (senderID, messageText){
   let temp = messageText.slice(1)
   var userIn = userInfo.find(user => user.UID === senderID)
-    console.log(userIn.find(user => user.follower.name === temp).key)
+    console.log(userIn.find(user => user.follower.name === temp))
 
   firebase.database().ref('users/' +userIn.id+'/follower/').remove()
 }
