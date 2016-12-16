@@ -261,7 +261,7 @@ function addChannel (senderID, messageText) {
 }
 
 function checkList () {
-  console.log('checking status')
+//  console.log('checking status')
 
 userInfo.forEach( function (data,index) {
   console.log(index)
@@ -269,13 +269,13 @@ userInfo.forEach( function (data,index) {
     axios.get('https://api.twitch.tv/kraken/streams/'+follow.name+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
     .then( function (res){
       if (res.data.stream != null) {
-        console.log('online')
+      //  console.log('online')
          firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
            live: true,
       })
       }
       else {
-        console.log('offline')
+        //console.log('offline')
         firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
           live: false,
           send: false
@@ -289,15 +289,15 @@ userInfo.forEach( function (data,index) {
 }
 
 function checkSend () {
-    console.log('checking Sending status')
+  //  console.log('checking Sending status')
     //sendTextMessage("939326652838978","ควยยยยยยยยยยยยยยยยยย")
 userInfo.forEach( function (data,index) {
     //console.log('process sending status: '+index)
   data.follower.forEach( function (follow,index2) {
       //console.log('process sending status phase2 :'+index)
       //console.log(data.UID)
-      console.log('live '+follow.live)
-      console.log('send '+follow.send)
+      //console.log('live '+follow.live)
+    //  console.log('send '+follow.send)
     if(follow.live && !follow.send){
       setTimeout(() => {
         sendTextMessage(data.UID,'ช่อง '+follow.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
@@ -309,7 +309,7 @@ userInfo.forEach( function (data,index) {
         firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
           send: true
      })
-     console.log('send message already')
+    // console.log('send message already')
   }
   })
 })
@@ -324,23 +324,14 @@ function deleteUser (senderID) {
 
 
 function showList (senderID) {
+    sendTextMessage(senderID,'คุณสามารถลบ Channel ที่ไม่ต้องการได้โดยการพิมพ์ชื่อ ![ชื่อที่ต้องการลบ] เช่น !eiei')
     var userIn = userInfo.find(user => user.UID === senderID)
-      var count = 0;
-      userIn.follower.forEach( function (data,index){
-          sendTextMessage(senderID,' '+data.name+'\n')
-          count ++
-          if(count === data.length) {
-            sendTextMessage(senderID,'คุณสามารถลบ Channel ที่ไม่ต้องการได้โดยการพิมพ์ชื่อ ![ชื่อที่ต้องการลบ] เช่น !eiei')
-          }
-        })
-
-
-    /*setTimeout(() => {
+    setTimeout(() => {
     userIn.follower.forEach( function (data,index){
         sendTextMessage(senderID,' '+data.name+'\n')
       })
-      sendTextMessage(senderID,'คุณสามารถลบ Channel ที่ไม่ต้องการได้โดยการพิมพ์ชื่อ ![ชื่อที่ต้องการลบ] เช่น !eiei')
-    }, 0)*/
+
+    }, 0)
 
 
 
@@ -349,7 +340,7 @@ function showList (senderID) {
 function deleteChannel (senderID, messageText){
   let temp = messageText.slice(1)
   var userIn = userInfo.find(user => user.UID === senderID)
-  console.log(userInfo.find(user => user.follower.name === temp).key)
+    console.log(userIn.find(user => user.follower.name === temp).key)
 
   firebase.database().ref('users/' +userIn.id+'/follower/').remove()
 }
