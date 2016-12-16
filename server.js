@@ -76,16 +76,15 @@ app.post('/webhook', function (req, res) {
       var timeOfEvent = entry.time
             // Iterate over each messaging event
       entry.messaging.forEach( function (event) {
-        if(event.postback)
-        {
-          var payload = event.postback.payload;
-            if(payload === 'get Start')
-            sendTextMessage(senderID, "ยินดีต้อนรับสู่ Alert Twitch คุณสามารถเริ่มใช้งานได้โดยการพิมพ์ \n subscript ถ้ามีข้อสงสัยสามารถพิมพ์ \n help")
-
-        }
         if (event.message) {
           receivedMessage(event)
-        } else { console.log('Webhook received unknown event: ', event) }
+        }
+        else if (event.postback) {
+            var payload = event.postback.payload;
+              if(payload == 'get Start')
+              sendTextMessage(senderID, "ยินดีต้อนรับสู่ Alert Twitch คุณสามารถเริ่มใช้งานได้โดยการพิมพ์ \n subscript ถ้ามีข้อสงสัยสามารถพิมพ์ \n help")
+        }
+        else { console.log('Webhook received unknown event: ', event) }
       })
     })
         // Assume all went well.
