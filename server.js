@@ -308,6 +308,9 @@ function checkList () {
 }
 
 function checkSend () {
+
+
+
   //  console.log('checking Sending status')
     //sendTextMessage("939326652838978","ควยยยยยยยยยยยยยยยยยย")
 userInfo.forEach( function (data,index) {
@@ -318,13 +321,18 @@ userInfo.forEach( function (data,index) {
       //console.log('live '+follow.live)
     //  console.log('send '+follow.send)
     if(follow.live && !follow.send){
+      axios.get('https://api.twitch.tv/kraken/channels/'+follow.name+'?client_id=l13ikftl5r75akwu350wqebougu9i1m')
+      .then( function (res){
+        sendLiveTwitch(data.UID,follow.name,res.data.logo,res.data.game)
+      })
 
-      setTimeout(() => {
+
+      /*setTimeout(() => {
         sendTextMessage(data.UID,'ช่อง '+follow.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
       }, 1000)
       setTimeout(() => {
         sendTextMessage(data.UID,'Link :https://www.twitch.tv/'+follow.name)
-      }, 2000)
+      }, 2000)*/
 
         firebase.database().ref('users/' + data.id +'/follower/'+index2+'/send').update({
           send: true
@@ -459,6 +467,37 @@ function sendGenericMessage(recipientId) {
 }
 
 
+function sendLiveTwitch(recipientId,chName,img,game) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message:{
+    attachment:{
+      type:"template",
+      payload:{
+        template_type:"generic",
+        elements:[
+          {
+            title:"ช่อง "+chName+" ที่คุณติดตาม Live แล้ว !!",
+            item_url:"https://www.twitch.tv/"+chName,
+            image_url:""+img,
+            subtitle:"Streaming Game : "+game,
+            buttons:[
+              {
+                type:"web_url",
+                url:"https://www.twitch.tv/"+chName,
+                title:"Watch now"
+              }  
+            ]
+          }
+        ]
+      }
+    }
+  }
+      }
+    callSendAPI(messageData)
+}
 
 
 
