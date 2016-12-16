@@ -190,6 +190,7 @@ function sendGenericMessage(recipientId) {
     }
   }
       }
+    callSendAPI(messageData)
 }
 function sendTextMessage (recipientId, messageText) {
   var messageData = {
