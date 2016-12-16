@@ -131,7 +131,7 @@ function receivedMessage (event) {
       else if (x) {
             let temp = messageText.slice(0,1)
             if(temp === '!'){
-              deleteChannel(senderID, messageText)
+              deleteChannel(senderID, temp)
             }
             else {
               addChannel(senderID, messageText)
@@ -334,9 +334,8 @@ function showList (senderID) {
 }
 
 function deleteChannel (senderID, messageText){
-  let temp = messageText.slice(1)
   var userIn = userInfo.find(user => user.UID === senderID)
-    console.log(userIn.find(user => user.follower.name === temp))
+    console.log(userIn.find(user => user.follower.name === messageText))
 
   firebase.database().ref('users/' +userIn.id+'/follower/').remove()
 }
