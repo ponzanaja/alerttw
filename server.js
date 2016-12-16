@@ -316,15 +316,9 @@ function deleteUser (senderID) {
 
 function showList (senderID) {
   var userIn = userInfo.find(user => user.UID === senderID)
-    userIn.follower.forEach( function (data){
-      console.log(data.name)
+    userIn.follower.forEach( function (data,index){
+      sendTextMessage(senderID,index+1+' '+data.name+'\n')
     })
-  /*userIn.forEach( function (data){
-    data.follower.forEach( function (follow,index){
-        sendTextMessage(senderID,index+1+' '+follow.name+'\n')
-
-    })
-  })*/
 }
 
 app.listen(app.get('port'), function () {
