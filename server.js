@@ -83,7 +83,7 @@ app.post('/webhook', function (req, res) {
             var payload = event.postback.payload;
             var senderID = event.sender.id
               if(payload == 'get Start')
-              sendTextMessage(senderID, "ยินดีต้อนรับสู่ Alert Twitch คุณสามารถเริ่มใช้งานได้โดยการพิมพ์ \n subscript ถ้ามีข้อสงสัยสามารถพิมพ์ \n help")
+              sendTextMessage(senderID, "ยินดีต้อนรับสู่ Alert Twitch คุณสามารถเริ่มใช้งานได้โดยการพิมพ์ \n subscript ถ้ามีข้อสงสัยสามารถพิมพ์ help")
         }
         else { console.log('Webhook received unknown event: ', event) }
       })
@@ -122,8 +122,8 @@ function receivedMessage (event) {
     else if (messageText === 'subscript' || messageText === 'Subscript') {
       addUser(senderID)
     }
-    else if (messageText === 'addlist') {
-      addChannel(senderID)
+    else if (messageText === 'help') {
+      sendTextMessage(senderID,'สามารถดูการใช้งานเบื้องต้นได้ที่นี้ goo.gl/H7oDuZ')
     }
     else if (messageText === 'unsubscript') {
       deleteUser(senderID)
