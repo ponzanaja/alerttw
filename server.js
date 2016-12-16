@@ -232,7 +232,7 @@ function addUser (userID) {
     }
     Users.push(data)
     setTimeout(() => {
-      sendTextMessage(userID, 'คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว :D ')
+      sendTextMessage(userID, 'คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว :D สามารถยกเลิกการสมัครได้โดยการพิมพ์ว่า "unsubscript"')
     }, 1000)
     setTimeout(() => {
       sendTextMessage(userID, 'กรุณากรอก Channel ที่คุณต้องการจะติดตาม')
