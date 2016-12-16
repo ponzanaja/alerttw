@@ -350,7 +350,7 @@ function deleteChannel (senderID, messageText){
   //var veri = userIn.follower.find(follow => follow.name === messageText)
   userIn.follower.forEach( function (user,index) {
     if (user.name === messageText ) {}
-    veri == user.name
+    veri = user.name
   })
 
   if(veri){
