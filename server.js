@@ -278,7 +278,7 @@ function checkSend () {
 userInfo.forEach( function (data,index) {
 
   data.follower.forEach( function (follow,index2) {
-    if(data.follower.live && !data.follow.send){
+    if(data.follower.live){
         sendTextMessage(data.UID,'ช่อง '+data.follower.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
         firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
           send: true
