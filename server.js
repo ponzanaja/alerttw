@@ -280,15 +280,14 @@ userInfo.forEach( function (data,index) {
     console.log('process sending status: '+index)
   data.follower.forEach( function (follow,index2) {
       console.log('process sending status phase2 :'+index)
-      console.log(data.follower.live)
       console.log(data.UID)
-    //if(data.follower.live){
-      //sendTextMessage(data.UID,'ช่อง '+data.follower.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
-        /*firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
+    if(follower.live && !follower.send){
+      sendTextMessage(data.UID,'ช่อง '+follower.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
+        firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
           send: true
-     })*/
+     })
      console.log('send message already')
-  //}
+  }
 
   })
 
