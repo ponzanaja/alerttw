@@ -79,10 +79,7 @@ app.post('/webhook', function (req, res) {
           receivedMessage(event)
         }
         else if (event.postback) {
-            var payload = event.postback.payload;
-            var senderID = event.sender.id
-              if(payload == 'get Start')
-              sendTextMessage(senderID, "ยินดีต้อนรับสู่ Alert Twitch คุณสามารถเริ่มใช้งานได้โดยการพิมพ์ \n subscript ถ้ามีข้อสงสัยสามารถพิมพ์ help")
+          receivedPostback(event)
         }
         else { console.log('Webhook received unknown event: ', event) }
       })
@@ -156,42 +153,33 @@ function receivedMessage (event) {
     sendTextMessage(senderID, 'Entered Wrong keyword')
   }
 }
-function sendGenericMessage(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message:{
-    attachment:{
-      type:"template",
-      payload:{
-        template_type:"generic",
-        elements:[
-          {
-            title:"Welcome to Peter\'s Hats",
-            item_url:"https://petersfancybrownhats.com",
-            image_url:"https://petersfancybrownhats.com/company_image.png",
-            subtitle:"We\'ve got the right hat for everyone.",
-            buttons:[
-              {
-                type:"web_url",
-                url:"https://petersfancybrownhats.com",
-                title:"View Website"
-              },
-              {
-                type:"postback",
-                title:"Start Chatting",
-                payload:"DEVELOPER_DEFINED_PAYLOAD"
-              }
-            ]
-          }
-        ]
-      }
-    }
+
+function receivedPostback(event) {
+  var senderID = event.sender.id;
+  var recipientID = event.recipient.id;
+  var timeOfPostback = event.timestamp;
+
+  // The 'payload' param is a developer-defined field which is set in a postback
+  // button for Structured Messages.
+  var payload = event.postback.payload;
+
+  console.log("Received postback for user %d and page %d with payload '%s' " +
+    "at %d", senderID, recipientID, payload, timeOfPostback);
+
+  // When a postback is called, we'll send a message back to the sender to
+  // let them know it was successful
+  if(payload == 'get Start'){
+    sendWelcome(senderID)
   }
-      }
-    callSendAPI(messageData)
+  else if (payload === 'subscript'){
+    addUser(senderID)
+  }else if (payload === 'help'){
+    sendTextMessage(senderID,'สามารถดูการใช้งานเบื้องต้นได้ที่นี้ goo.gl/H7oDuZ')
+  }
+
 }
+
+
 function sendTextMessage (recipientId, messageText) {
   var messageData = {
     recipient: {
@@ -333,6 +321,7 @@ userInfo.forEach( function (data,index) {
       //console.log('live '+follow.live)
     //  console.log('send '+follow.send)
     if(follow.live && !follow.send){
+
       setTimeout(() => {
         sendTextMessage(data.UID,'ช่อง '+follow.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
       }, 1000)
@@ -404,6 +393,94 @@ function deleteChannel (senderID, messageText){
     sendTextMessage(senderID,'คุณกรอก Channel ที่ต้องการลบ ผิด')
   }*/
 }
+
+function sendWelcome(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: 'template',
+        payload: {
+          template_type: 'button',
+          text: 'ยินดีต้อนรับสู่ Alert Twitch คุณสามารถเริ่มใช้งานได้โดยการเลือก \n subscript ถ้ามีข้อสงสัยสามารถพิมพ์ help',
+          buttons:[{
+            type: "postback",
+            title: "subscript",
+            payload: "subscript"
+          }, {
+            type: "postback",
+            title: "help",
+            payload: "help"
+          }]
+        }
+      }
+}
+  }
+  callSendAPI(messageData)
+      }
+
+
+
+
+function sendGenericMessage(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message:{
+    attachment:{
+      type:"template",
+      payload:{
+        template_type:"generic",
+        elements:[
+          {
+            title:"Welcome to Peter\'s Hats",
+            item_url:"https://petersfancybrownhats.com",
+            image_url:"https://petersfancybrownhats.com/company_image.png",
+            subtitle:"We\'ve got the right hat for everyone.",
+            buttons:[
+              {
+                type:"web_url",
+                url:"https://petersfancybrownhats.com",
+                title:"View Website"
+              },
+              {
+                type:"postback",
+                title:"Start Chatting",
+                payload:"DEVELOPER_DEFINED_PAYLOAD"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+      }
+    callSendAPI(messageData)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.listen(app.get('port'), function () {
   console.log('run at port', app.get('port'))
