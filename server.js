@@ -76,14 +76,12 @@ app.post('/webhook', function (req, res) {
       var timeOfEvent = entry.time
             // Iterate over each messaging event
       entry.messaging.forEach( function (event) {
-        if(event.payload)
+        if(event.postback)
         {
           var payload = event.postback.payload;
-          if (event.postback) {
             if(payload === 'get Start')
-            sendTextMessage(senderID, "ยินดีต้อนรับสู่ Alert Twitch คุณสามารถเริ่มใช้งานได้โดยการพิมพ์ \n subscript ถ้ามีข้อสงสัยสามารถพิมพ์ \n help");
+            sendTextMessage(senderID, "ยินดีต้อนรับสู่ Alert Twitch คุณสามารถเริ่มใช้งานได้โดยการพิมพ์ \n subscript ถ้ามีข้อสงสัยสามารถพิมพ์ \n help")
 
-      }
         }
         if (event.message) {
           receivedMessage(event)
