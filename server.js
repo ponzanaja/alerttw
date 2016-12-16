@@ -321,10 +321,9 @@ function showList (senderID) {
 
   var userIn = userInfo.find(user => user.UID === senderID)
     userIn.follower.forEach( function (data,index){
-      setTimeout(() => {
         sendTextMessage(senderID,index+1+' '+data.name+'\n')
-      }, 2000)
-    })
+      })
+
 }
 
 function deleteChannel (senderID, messageText){
