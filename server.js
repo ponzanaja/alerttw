@@ -137,8 +137,9 @@ function receivedMessage (event) {
       }
       else if (x) {
             let temp = messageText.slice(0,1)
+            let temp2 = messageText.slice(1)
             if(temp === '!'){
-              deleteChannel(senderID, temp)
+              deleteChannel(senderID, temp2)
             }
             else {
               addChannel(senderID, messageText)
@@ -344,11 +345,15 @@ function showList (senderID) {
 }
 
 function deleteChannel (senderID, messageText){
+  console.log(messageText)
   var userIn = userInfo.find(user => user.UID === senderID)
-
-
-  firebase.database().ref('users/' +userIn.id+'/follower/').remove()
+  var veri = userIn.find(user => user.follow.name === messageText)
+  if(veri){
+  firebase.database().ref('users/' +userIn.id+'/follower/'+messageText).remove()
   sendTextMessage(senderID,'เราได้ลบ '+messageText+' เรียบร้อยแล้ว')
+}else {
+  sendTextMessage(senderID,'คุณกรอก Channel ที่ต้องการลบ ผิด')
+}
 }
 
 app.listen(app.get('port'), function () {
