@@ -28,7 +28,7 @@ Users.on('child_added', function (snapshot) {
 
 Users.on('child_changed', function (snapshot) {
   var id = snapshot.key
-  var User = Users.find(user => user.id === id)
+  var User = userInfo.find(user => user.id === id)
   User.UID = snapshot.val().UID
   User.follower = snapshot.val().follower
   User.state = snapshot.val().state
