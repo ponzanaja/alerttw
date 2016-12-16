@@ -330,7 +330,7 @@ function showList (senderID) {
 
       userIn.follower.forEach( function (data,index){
           sendTextMessage(senderID,' '+data.name+'\n')
-          if(index === follower.length){
+          if(index === data.length){
             sendTextMessage(senderID,'คุณสามารถลบ Channel ที่ไม่ต้องการได้โดยการพิมพ์ชื่อ ![ชื่อที่ต้องการลบ] เช่น !eiei')
           }
         })
