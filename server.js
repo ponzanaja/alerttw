@@ -347,7 +347,8 @@ function showList (senderID) {
 function deleteChannel (senderID, messageText){
   console.log(messageText)
   var userIn = userInfo.find(user => user.UID === senderID)
-  console.log(userIn)
+    var x= userIn.follow.find(follow => follow.name === messageText)
+  console.log(x)
   /*if(veri){
   firebase.database().ref('users/' +userIn.id+'/follower/'+messageText).remove()
   sendTextMessage(senderID,'เราได้ลบ '+messageText+' เรียบร้อยแล้ว')
