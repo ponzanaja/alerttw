@@ -281,8 +281,8 @@ userInfo.forEach( function (data,index) {
   data.follower.forEach( function (follow,index2) {
       console.log('process sending status phase2 :'+index)
       console.log(data.UID)
-    if(follower.live && !follower.send){
-      sendTextMessage(data.UID,'ช่อง '+follower.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
+    if(follow.live && !follow.send){
+      sendTextMessage(data.UID,'ช่อง '+follow.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
         firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
           send: true
      })
