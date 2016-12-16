@@ -118,8 +118,10 @@ function receivedMessage (event) {
     else if (messageText === 'addlist') {
       addChannel(senderID)
     }
-    else if () {
-
+    else if (messageText === 'unsubscript') {
+      deleteUser(senderID)
+    }else if (messageText === '!list'){
+      showList(senderID)
     }
     else {
       let x = userInfo.find(user => user.UID === senderID)
@@ -310,6 +312,19 @@ function deleteUser (senderID) {
   firebase.database().ref('users/' +userIn.id+'').remove()
   }
   sendTextMessage(senderID,'ขอบคุณที่ใช้งานที่ไว้วางใจใช้งาน Alert Twitch ของเรา :P ')
+
+function showList (senderID) {
+  var userIn = userInfo.find(user = user.UID === senderID)
+
+  userIn.forEach( function (data,){
+    data.follower.forEach( function (follow,index){
+        sendTextMessage(senderID,index+1+' '+follow.name+'\n')
+
+    })
+  })
+}
+
+
 
 }
 app.listen(app.get('port'), function () {
