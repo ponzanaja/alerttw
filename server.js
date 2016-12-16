@@ -285,7 +285,13 @@ userInfo.forEach( function (data,index) {
       console.log('live '+follow.live)
       console.log('send '+follow.send)
     if(follow.live && !follow.send){
-      sendTextMessage(data.UID,'ช่อง '+follow.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
+      setTimeout(() => {
+        sendTextMessage(data.UID,'ช่อง '+follow.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
+      }, 1000)
+      setTimeout(() => {
+        sendTextMessage(data.UID,'Link :https://www.twitch.tv/'+data.UID )
+      }, 2000)
+
         firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
           send: true
      })
