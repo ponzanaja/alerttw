@@ -271,7 +271,7 @@ function checkList () {
         if (res.data.stream != null) {
         //  console.log('online')
            firebase.database().ref('users/' + data.id +'/follower/'+index2+'/live').update({
-             live: true,
+             live: true
         })
         }
         else {
