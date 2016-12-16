@@ -346,7 +346,13 @@ function showList (senderID) {
 function deleteChannel (senderID, messageText){
   console.log(messageText)
   var userIn = userInfo.find(user => user.UID === senderID)
-  var veri = userIn.follower.find(follow => follow.name === messageText)
+  var veri
+  //var veri = userIn.follower.find(follow => follow.name === messageText)
+  userIn.follower.forEach( function (user,index) {
+    if (user.name === messageText ) {}
+    veri == user.name
+  })
+
   if(veri){
     userIn.follower.forEach( function (user,index) {
       if (user.name === messageText ) {
