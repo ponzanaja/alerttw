@@ -275,17 +275,18 @@ userInfo.forEach( function (data,index) {
 
 function checkSend () {
     console.log('checking Sending status')
+    sendTextMessage("939326652838978","ควยยยยยยยยยยยยยยยยยย")
 userInfo.forEach( function (data,index) {
     console.log('process sending status: '+index)
   data.follower.forEach( function (follow,index2) {
       console.log('process sending status phase2 :'+index)
-    if(data.follower.live){
+    //if(data.follower.live){
         sendTextMessage(data.UID,'ช่อง '+data.follower.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
         firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
           send: true
      })
      console.log('send message already')
-    }
+  //}
 
   })
 
