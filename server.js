@@ -349,7 +349,7 @@ function deleteChannel (senderID, messageText){
   var userIn = userInfo.find(user => user.UID === senderID)
   var veri = userIn.follower.find(follow => follow.name === messageText)
   if(veri){
-    userIn.fllower.forEach( function (user,index) {
+    userIn.follower.forEach( function (user,index) {
       if (user.name === messageText ) {
         firebase.database().ref('users/' +userIn.id+'/follower/'+index).remove()
         sendTextMessage(senderID,'เราได้ลบ '+messageText+' เรียบร้อยแล้ว')
