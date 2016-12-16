@@ -323,7 +323,7 @@ function showList (senderID) {
     userIn.follower.forEach( function (data,index){
       setTimeout(() => {
         sendTextMessage(senderID,index+1+' '+data.name+'\n')
-      }, 1000*index)
+      }, 2000)
     })
 }
 
