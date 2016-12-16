@@ -95,15 +95,16 @@ function receivedMessage (event) {
   var recipientID = event.recipient.id
   var timeOfMessage = event.timestamp
   var message = event.message
+  var payload = event.postback.payload;
 
   console.log('Received message for user %d and page %d at %d with message:')
         //,senderID, recipientID, timeOfMessage)
   console.log(JSON.stringify(message))
 
   var messageId = message.mid
-
   var messageText = message.text
   var messageAttachments = message.attachments
+
 
   if (messageText) {
     if (messageText === 'hello') {
@@ -141,6 +142,11 @@ function receivedMessage (event) {
 
       }
     }
+    if (event.postback) {
+      if(payload === 'get Start')
+      sendTextMessage(senderID, "ยินดีต้อนรับสู่ Alert Twitch คุณสามารถเริ่มใช้งานได้โดยการพิมพ์ \n subscript ถ้ามีข้อสงสัยสามารถพิมพ์ \n help");
+      
+}
         // If we receive a text message, check to see if it matches a keyword
         // and send back the example. Otherwise, just echo the text we received.
         /* switch (messageText) {
