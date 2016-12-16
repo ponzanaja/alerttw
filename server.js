@@ -277,7 +277,7 @@ function checkList () {
         else {
           //console.log('offline')
           firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
-            name: follow.name
+            name: follow.name,
             live: false,
             send: false
        })
