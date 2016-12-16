@@ -81,6 +81,7 @@ app.post('/webhook', function (req, res) {
         }
         else if (event.postback) {
             var payload = event.postback.payload;
+            var senderID = event.sender.id
               if(payload == 'get Start')
               sendTextMessage(senderID, "ยินดีต้อนรับสู่ Alert Twitch คุณสามารถเริ่มใช้งานได้โดยการพิมพ์ \n subscript ถ้ามีข้อสงสัยสามารถพิมพ์ \n help")
         }
