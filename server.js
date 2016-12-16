@@ -308,7 +308,7 @@ userInfo.forEach( function (data,index) {
         sendTextMessage(data.UID,'Link :https://www.twitch.tv/'+data.UID )
       }, 2000)
 
-        firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
+        firebase.database().ref('users/' + data.id +'/follower/'+index2+'/send').update({
           send: true
      })
     // console.log('send message already')
