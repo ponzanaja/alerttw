@@ -317,21 +317,26 @@ function deleteUser (senderID) {
 
 
 function showList (senderID) {
-    sendTextMessage(senderID,'คุณสามารถลบ Channel ที่ไม่ต้องการได้โดยการพิมพ์ชื่อ ![ชื่อที่ต้องการลบ] เช่น !eiei')
+
 
     var userIn = userInfo.find(user => user.UID === senderID)
     setTimeout(() => {
       userIn.follower.forEach( function (data,index){
           sendTextMessage(senderID,' '+data.name+'\n')
         })
-    }, 1000)
+        sendTextMessage(senderID,'คุณสามารถลบ Channel ที่ไม่ต้องการได้โดยการพิมพ์ชื่อ ![ชื่อที่ต้องการลบ] เช่น !eiei')
+    }, 0)
 
 
 
 }
 
 function deleteChannel (senderID, messageText){
+  let temp = messageText.slice(1)
+  var userIn = userInfo.find(user => user.UID === senderID)
+  console.log(userInfo.find(user => user.follower.name === temp).key)
 
+  firebase.database().ref('users/' +userIn.id+'/follower/').remove()
 }
 
 app.listen(app.get('port'), function () {
