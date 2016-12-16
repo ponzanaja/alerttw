@@ -173,10 +173,7 @@ function receivedPostback(event) {
   }
   else if (payload === 'subscript'){
     addUser(senderID)
-  }else if (payload === 'help'){
-    sendTextMessage(senderID,'สามารถดูการใช้งานเบื้องต้นได้ที่นี้ goo.gl/H7oDuZ')
   }
-
 }
 
 
@@ -410,9 +407,9 @@ function sendWelcome(recipientId) {
             title: "subscript",
             payload: "subscript"
           }, {
-            type: "postback",
-            title: "help",
-            payload: "help"
+            type: "web_url",
+            url: "goo.gl/H7oDuZ",
+            title: "help"
           }]
         }
       }
