@@ -118,6 +118,9 @@ function receivedMessage (event) {
     else if (messageText === 'addlist') {
       addChannel(senderID)
     }
+    else if () {
+
+    }
     else {
       let x = userInfo.find(user => user.UID === senderID)
       if (!x) {
@@ -297,15 +300,18 @@ userInfo.forEach( function (data,index) {
      })
      console.log('send message already')
   }
-
   })
-
 })
-
-
-
 }
 
+function deleteUser (senderID) {
+  var userIn = userInfo.find(user => user.UID === senderID)
+
+  firebase.database().ref('users/' +userIn.id+'').remove()
+  }
+  sendTextMessage(senderID,'ขอบคุณที่ใช้งานที่ไว้วางใจใช้งาน Alert Twitch ของเรา :P ')
+
+}
 app.listen(app.get('port'), function () {
   console.log('run at port', app.get('port'))
 })
