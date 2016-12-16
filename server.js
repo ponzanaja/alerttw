@@ -197,6 +197,7 @@ function sendGenericMessage(recipientId) {
         }
       }
     }
+  }
 }
 function sendTextMessage (recipientId, messageText) {
   var messageData = {
