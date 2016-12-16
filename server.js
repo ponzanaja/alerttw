@@ -319,10 +319,14 @@ function deleteUser (senderID) {
 function showList (senderID) {
     sendTextMessage(senderID,'คุณสามารถลบ Channel ที่ไม่ต้องการได้โดยการพิมพ์ชื่อ ![ชื่อที่ต้องการลบ] เช่น !eiei')
 
-  var userIn = userInfo.find(user => user.UID === senderID)
-    userIn.follower.forEach( function (data,index){
-        sendTextMessage(senderID,index+1+' '+data.name+'\n')
-      })
+    var userIn = userInfo.find(user => user.UID === senderID)
+    setTimeout(() => {
+      userIn.follower.forEach( function (data,index){
+          sendTextMessage(senderID,' '+data.name+'\n')
+        })
+    }, 1000)
+
+
 
 }
 
