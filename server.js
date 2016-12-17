@@ -55,6 +55,16 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(bodyParser.json())
 
+app.get('/wakeme', function (req,res){
+  res.send('I wake up')
+})
+
+app.post('/wakeme', function (req,res){
+  var data = req.bodyParser
+
+  res.sendStatus(200)
+})
+
 app.get('/webhook', function (req, res) {
   if (req.query['hub.verify_token'] === key) {
     res.send(req.query['hub.challenge'])
