@@ -280,8 +280,7 @@ function checkList () {
       axios.get('https://api.twitch.tv/kraken/streams/'+follow.name+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
       .then( function (res){
         if (res.data.stream != null) {
-
-           firebase.database().ref('users/' + data.id +'/follower/'+index2+'/live').update({
+           firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
              live: true
         })
         }
@@ -318,7 +317,7 @@ userInfo.forEach( function (data,index) {
         sendTextMessage(data.UID,'Link :https://www.twitch.tv/'+follow.name)
       }, 2000)*/
 
-        firebase.database().ref('users/' + data.id +'/follower/'+index2+'/send').update({
+        firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
           send: true
      })
     // console.log('send message already')
