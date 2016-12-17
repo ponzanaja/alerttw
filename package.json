@@ -2,14 +2,15 @@
   "name": "AlertTwitch",
   "version": "2.1.4",
   "description": "This Project made for study and learning",
-  "author": "Ponzanaja",
+  "author": "",
   "main": "server.js",
   "dependencies": {
+    "axios": "^0.15.3",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "firebase": "^3.6.0",
-    "request": "^2.78.0",
-    "axios": "^0.15.3"
+    "newrelic": "^1.35.1",
+    "request": "^2.78.0"
   },
   "devDependencies": {},
   "scripts": {
@@ -20,7 +21,6 @@
     "type": "git",
     "url": "git+https://github.com/infernalslam/alertNaja.git"
   },
-  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/infernalslam/alertNaja/issues"
