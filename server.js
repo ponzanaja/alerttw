@@ -117,8 +117,7 @@ function receivedMessage (event) {
 
   if (messageText) {
     if (messageText === 'hello') {
-
-
+      sendTextMessage(senderID, 'This bot is created by Wipoo suvunnasan you can "subscript" for use the functional')
     }
     else if (messageText === 'about') {
       sendTextMessage(senderID, 'This bot created by Wipoo suvunnasan')
