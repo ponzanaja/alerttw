@@ -60,8 +60,7 @@ app.get('/wakeme', function (req,res){
 })
 
 app.post('/wakeme', function (req,res){
-  var data = req.bodyParser
-
+  var data = req.body
   res.sendStatus(200)
 })
 
