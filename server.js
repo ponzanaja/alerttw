@@ -47,7 +47,7 @@ setInterval(() => {
 }, 10000)
 setInterval(() => {
   checkSend()
-}, 10000)
+}, 15000)
 app.use(bodyParser.json())
 app.set('port', (process.env.PORT || 4000))
 app.use(bodyParser.urlencoded({
