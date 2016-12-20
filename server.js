@@ -310,14 +310,19 @@ function checkList () {
 
 function checkSend () {
 
-
+var imglink = 'https://lh5.googleusercontent.com/Z4HSK19DSI2Qzw3rYhVMSeNIn94QV72RyJLCbnrvIOZGcu0E-W0zY9WHRx6EnuzfsRU3kTMznMqgaOU=w1858-h1011'
 userInfo.forEach( function (data,index) {
 
   data.follower.forEach( function (follow,index2) {
     if(follow.live && !follow.send){
       axios.get('https://api.twitch.tv/kraken/channels/'+follow.name+'?client_id=l13ikftl5r75akwu350wqebougu9i1m')
       .then( function (res){
+        if(res.data.log != null){
         sendLiveTwitch(data.UID,follow.name,res.data.logo,res.data.game)
+        }
+        else{
+          sendLiveTwitch(data.UID,follow.name,imglink,res.data.game)
+        }
       })
       /*setTimeout(() => {
         sendTextMessage(data.UID,'ช่อง '+follow.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
