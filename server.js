@@ -1,265 +1,460 @@
-const express = require('express')
-const firebase = require("firebase");
-const snmp = require('snmp-native')
-const dateFormat = require('dateformat')
-const app = express()
-/* root / root1234 */
-const {exec} = require('child_process')
-
+var express = require('express')
+var bodyParser = require('body-parser')
+var request = require('request')
+var firebase = require('firebase')
+const axios = require('axios')
+var newrelic = require('newrelic')
+var app = express()
+const key = 'EAAC3DSTTyCMBAPcOlfjovZCs8oZBWqDAnU46eTLaDNxtcCNg8jfvpcHZCSw3C0fBxbjGptu7zc9wuGKBVsK7n3L43Uves1k6tqhkT4YqnrpWbtVNEQGwhwFWIUOHjKZCZBuheNoMqfACA7A7L5NJ3OJZCfsoXKNdz7qKtguHsLFgZDZD'
 var config = {
-    apiKey: "AIzaSyCjFxu7Ft4mfHp8ksLYoRkOSWeK4tRmI0w",
-    authDomain: "showdowndata.firebaseapp.com",
-    databaseURL: "https://showdowndata.firebaseio.com",
-    projectId: "showdowndata",
-    storageBucket: "showdowndata.appspot.com",
-    messagingSenderId: "811451470025"
-  }
-firebase.initializeApp(config);
-// get data from firebase
-var db  = firebase.database().ref('db')
+  apiKey: 'AIzaSyDA_HOpzHHsdcsOX36Gh80_i4MCYHHJr5c',
+  authDomain: 'userdatabase-71afb.firebaseapp.com',
+  databaseURL: 'https://userdatabase-71afb.firebaseio.com',
+  storageBucket: 'userdatabase-71afb.appspot.com',
+  messagingSenderId: '49200232033'
+}
 
-var dbInfo = []
-//when you have some data update
-db.on('child_added', function (snapshot) {
+
+
+firebase.initializeApp(config)
+var Users = firebase.database().ref('users')
+
+var userInfo = []
+Users.on('child_added', function (snapshot) {
   var item = snapshot.val()
   item.id = snapshot.key
-  dbInfo.push(item)
-  console.log(dbInfo)
+  userInfo.push(item)
+  console.log(userInfo)
 })
- // checking for update from firebase
-db.on('child_changed', function (snapshot) {
+
+Users.on('child_changed', function (snapshot) {
   var id = snapshot.key
-  var sNode = dbInfo.find(info => info.id === id)
-  sNode.node = snapshot.val().node
-  sNode.ip = snapshot.val().ip
-  sNode.onlinenow = snapshot.val().onlinenow
-  sNode.inbound = snapshot.val().inbound
-  sNode.outbound = snapshot.val().outbound
-  sNode.speedtestUp = snapshot.val().speedtestUp
-  sNode.speedtestDown = snapshot.val().speedtestDown
-  sNode.utilize = snapshot.val().utilize
-
-  console.log( ' CHANGE dbInfo \n ' + dbInfo)
+  var User = userInfo.find(user => user.id === id)
+  User.UID = snapshot.val().UID
+  User.follower = snapshot.val().follower
+  User.state = snapshot.val().state
+  console.log( ' CHANGE userInfo \n ' + userInfo)
 })
-/////////////////////// Network Variable Start here ///////////////////////
-var dataGet = ""
-var online = ""
-var ipNow = ""
-var sumInbound = 0
-var sumOutbound = 0
-var download = 0
-var upload = 0
-/////////////////////// Network Variable End here ///////////////////////
 
-/*----------------------------------------------------------------------*/
-
-
+Users.on('child_removed', function (snapshot) {
+    var id = snapshot.key
+    var index = userInfo.findIndex(user => user.id === id)
+     userInfo.splice(index,1)
+  console.log(userInfo)
+})
 setInterval(() => {
- console.log("We're Here now @ setInterval")
+  checkList()
+}, 10000)
+setInterval(() => {
+  checkSend()
+}, 15000)
+app.use(bodyParser.json())
+app.set('port', (process.env.PORT || 4000))
+app.use(bodyParser.urlencoded({
+  extended: false
+}))
+app.use(bodyParser.json())
 
- /////////////////////// Date Variable Start here ///////////////////////
- var now = new Date()
- var date = dateFormat(now, "d/m/yyyy")
- var time = dateFormat(now, "HH:MM:ss")
- /////////////////////// Date Variable End here ////////////////////////
- showResult()
- sendtoFirebase("Node1",date,time)
-speedTest().then((result) => {
-  let newResult = result.replace(/(\r\n|\n|\r)/gm,"")
-  let indexOfdownload = newResult.indexOf("M")
-  let indexOfupload = newResult.indexOf("s")
-  let indexOfupload2 =  newResult.lastIndexOf("M")
-  download = newResult.slice(0,indexOfdownload)
-  upload = newResult.slice(indexOfupload+1,indexOfupload2)
-    download = download.trim()
-    upload = upload.trim()
+app.get('/wakeme', function (req,res){
+  res.send('I wake up')
 })
- getMIB("Node1",date,time)
-}, 60000)
 
+app.post('/wakeme', function (req,res){
+  var data = req.body
+  res.sendStatus(200)
+})
 
- function showResult(){
-  getIP().then(getOnline).then( (data) => {
-    dataGet = data
-    let indexOfuser = dataGet.lastIndexOf("(")
-    let onlineUser = dataGet.slice(indexOfuser+1,indexOfuser+2)
-     online = onlineUser
-  }).catch((error) => {console.error(error.message)} )
-}
-
-
- function getIP(){
-   console.log("We're getting in IP")
-   return new Promise((resolve, reject) =>{
-     exec('/sbin/ifconfig eth0 | grep \'inet addr:\' | cut -d: -f2 | awk \'{ print $1}\'', (err,stdout,stderr) =>{
-             if(err) reject(err)
-             else resolve( ipNow = `${stdout}`)
-      })
-    })
-}
-
- function getOnline(ip){
-   console.log("This Is IP Parameter " +ip)
-   let newIP = ip.replace(/(\r\n|\n|\r)/gm,"").concat("/24")
-   return new Promise((resolve, reject) => {
-    exec('nmap -sP '+ newIP, (err,stdout,stderr) =>{
-     if(err) return reject(err)
-     else resolve(`${stdout}`)
-      })
-    })
-}
-
-function sendtoFirebase(nodeName,date,time){
-  let check = dbInfo.find(info => info.node === nodeName)
-
-  if(check){
-    firebase.database().ref('db/' + check.id).update({
-      ip: ipNow,
-      onlinenow: online,
-      speedtestUp: upload,
-      speedtestDown: download
-    })
-  }else {
-    let sendData =  {
-        node: nodeName,
-        ip: ipNow,
-        onlinenow: online,
-        inbound: [{
-            value: 0,
-            date: date,
-            time: time
-        }],
-        outbound:[{
-            value: 0,
-            date: date,
-            time: time
-        }],
-        speedtestUp:0,
-        speedtestDown:0,
-        utilize:0,
-        packetloss:0
-        }
-    return new Promise((resolve, reject) => {
-      if(!db.push(sendData)) return reject( "Error can't send data to Firebase")
-      else return resolve(db.push(sendData))
-    })
-
+app.get('/webhook', function (req, res) {
+  if (req.query['hub.verify_token'] === key) {
+    res.send(req.query['hub.challenge'])
   }
+  res.send('Error, wrong token')
+})
 
-}
-//////////////////////////////////// Getting MIB /////////////////////////////////////////////
-function getMIB(nodeName,date,time){
-    let info = {} // all data will be here
-    var inbound = []
-    let deviceNetwork = new snmp.Session({ host:'192.168.1.254' }) // 10.4.15.1 // 192.168.1.254
-    //getInbound
-      deviceNetwork.getSubtree({ oid: [1, 3, 6, 1, 2, 1, 2, 2, 1, 10] }, function (err, varbinds) {
-        if (err) {
-          console.log(err)
-        } else {
-            varbinds.forEach((varbind) => {
-              let data = {
-                indexOID: varbind.oid[10],
-                inbound: parseInt(varbind.value / 1048576)
-              }
-              inbound.push(data)
-            })
-            // console.log(inbound) out commend for checking data
+app.post('/webhook', function (req, res) {
+  var data = req.body
+
+    // Make sure this is a page subscription
+  if (data.object === 'page') {
+        // Iterate over each entry - there may be multiple if batched
+    data.entry.forEach( function (entry) {
+      var pageID = entry.id
+      var timeOfEvent = entry.time
+            // Iterate over each messaging event
+      entry.messaging.forEach( function (event) {
+        if (event.message) {
+          receivedMessage(event)
         }
+        else if (event.postback) {
+          receivedPostback(event)
+        }
+        else { console.log('Webhook received unknown event: ', event) }
+      })
     })
+        // Assume all went well.
+        //
+        // You must send back a 200, within 20 seconds, to let us know
+        // you've successfully received the callback. Otherwise, the request
+        // will time out and we will keep trying to resend.
+    res.sendStatus(200)
+  }
+})
 
-    let outbound = []
-    deviceNetwork.getSubtree({ oid: [1, 3, 6, 1, 2, 1, 2, 2, 1, 16] }, function (err, varbinds) {
-      if (err) {
-        console.log(err)
-      } else {
-          varbinds.forEach((varbind) => {
-            let data = {
-              indexOID: varbind.oid[10],
-              outbound: parseInt(varbind.value / 1048576)
-            }
-            outbound.push(data)
-          })
-        //  console.log(outbound) out commend for checking data
+function receivedMessage (event) {
+  var senderID = event.sender.id
+  var recipientID = event.recipient.id
+  var timeOfMessage = event.timestamp
+  var message = event.message
+
+  console.log('Received message for user %d and page %d at %d with message:')
+        //,senderID, recipientID, timeOfMessage)
+  console.log(JSON.stringify(message))
+
+  var messageId = message.mid
+  var messageText = message.text
+  var messageAttachments = message.attachments
+
+
+  if (messageText) {
+    if (messageText === 'hello') {
+      sendTextMessage(senderID, 'This bot is created by Wipoo suvunnasan you can "subscript" for use the functional')
+    }
+    else if (messageText === 'about') {
+      sendTextMessage(senderID, 'This bot created by Wipoo suvunnasan')
+    }
+    else if (messageText === 'subscript' || messageText === 'Subscript') {
+      addUser(senderID)
+    }
+    else if (messageText === 'help') {
+      sendTextMessage(senderID,'สามารถดูการใช้งานเบื้องต้นได้ที่นี้ goo.gl/H7oDuZ')
+    }
+    else if (messageText === 'unsubscript') {
+      deleteUser(senderID)
+    }else if (messageText === '!list'){
+      showList(senderID)
+    }
+    else {
+      let userIn = userInfo.find(user => user.UID === senderID)
+      if (!userIn) {
+        sendTextMessage(senderID, 'Your entered wrong Keywords Please try : hello , about , subscript')
       }
-  })
+      else if (userIn) {
+            let temp = messageText.slice(0,1)
+            let temp2 = messageText.slice(1)
+            if(temp === '!'){
+              deleteChannel(senderID, temp2)
+            }
+            else {
+              addChannel(senderID, messageText)
+            }
+      }else {
 
-  let intName = []
-  let countInterface = 0
-  deviceNetwork.getSubtree({ oid: [1, 3, 6, 1, 2, 1, 2, 2, 1, 2] }, function (err, varbinds) {
-    if (err) {
-      console.log(err)
-    } else {
-        varbinds.forEach((varbind) => {
-          let data = {
-            indexOID: varbind.oid[10],
-            intName: varbind.value
-          }
-          intName.push(data)
-          if((varbind.value).toString().toLowerCase().charAt(0) === 'f' ||  (varbind.value).toString().toLowerCase().charAt(0) == 'g'){
-            countInterface++
-          }
-        })
-        //console.log(intName) out commend for checking data
-        console.log("Total interface is :" + countInterface)
+      }
     }
-
-
-      for (var i = 0; i < countInterface; i++) {
-         sumInbound += inbound[i].inbound
-         sumOutbound += outbound[i].outbound
-       }
-
-  console.log("Sum inbound : "sumInbound)
-  })
-
-  let check = dbInfo.find(info => info.node === nodeName)
-  if(check){
-    let checkInbound = check.inbound
-    let checkOutbound = check.outbound
-    let insertIn = {
-      value: sumInbound,
-      date: date,
-      time: time
-    }
-    let insertOut = {
-      value: sumOutbound,
-      date: date,
-      time: time
-    }
-      checkInbound.push(insertIn)
-      checkOutbound.push(insertOut)
-      firebase.database().ref('db/' + check.id).update({
-      inbound: checkInbound,
-      outbound: checkOutbound
-    })
-    sumInbound = sumOutbound = 0
+        // If we receive a text message, check to see if it matches a keyword
+        // and send back the example. Otherwise, just echo the text we received.
+  }
+  else if (messageAttachments) {
+    sendTextMessage(senderID, 'Entered Wrong keyword')
   }
 }
 
-function speedTest(){
-  return  new Promise((resolve, reject) => {
-   exec('python speedtest-cli | grep \'Download:\\|Upload:\'|cut -d: -f2',{
-     cwd: '/project1'
-   }, (err,stdout,stderr) =>{
-       setTimeout(() => {
-         if(err) return reject(err)
-         else resolve(`${stdout}`)
-       })
-     })
-   })
+function receivedPostback(event) {
+  var senderID = event.sender.id;
+  var recipientID = event.recipient.id;
+  var timeOfPostback = event.timestamp;
+
+  // The 'payload' param is a developer-defined field which is set in a postback
+  // button for Structured Messages.
+  var payload = event.postback.payload;
+
+  console.log('Received postback for user %d and page %d with payload "%s" ' +
+    'at %d', senderID, recipientID, payload, timeOfPostback);
+
+  // When a postback is called, we'll send a message back to the sender to
+  // let them know it was successful
+  if(payload == 'get Start'){
+    sendWelcome(senderID)
+  }
+  else if (payload === 'subscript'){
+    addUser(senderID)
+  }
 }
 
+function sendTextMessage (recipientId, messageText) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: messageText
+    }
+  }
+  callSendAPI(messageData)
+}
 
-// Define port number as 3000
-const port = 3000;
+function callSendAPI (messageData) {
+  request({
+    uri: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: {
+      access_token: key
+    },
+    method: 'POST',
+    json: messageData
 
-// Routes HTTP GET requests to the specified path "/" with the specified callback function
-app.get('/', function(request, response) {
-    response.send(ipNow + "ออนไลน์ user" + online)
+  }, function (error, response, body) {
+    if (!error && response.statusCode === 200) {
+      var recipientId = body.recipient_id
+      var messageId = body.message_id
+
+      console.log('Successfully sent generic message with id %s to recipient %s')
+    } else {
+      console.error('Unable to send message.')
+      console.error(response)
+      console.error(error)
+    }
+  })
+}
+
+function addUser (userID) {
+  var x = userInfo.find(user => user.UID === userID)
+        // x.follower[0]
+  if (x) {
+        // setTimeout(,1000)
+    setTimeout(() => {
+      sendTextMessage(userID, 'คุณได้ทำการสมัครสมาชิกไปแล้ว !! ')
+    }, 1000)
+    setTimeout(() => {
+      sendTextMessage(userID, 'กรุณากรอก Channel ที่คุณต้องการจะติดตาม <3')
+    }, 2000)
+        // setTimeout(sendTextMessage(userID, 'โปรดพิมพ์ \'addlist\' เพื่อเพิ่มชื่อช่องที่ต้องการติดตาม'),3000)
+  } else {
+    var data = {
+      UID: userID,
+      follower: [{
+        name: 'ponza2538',
+        live: false,
+        send: false
+      }],
+      state: '1'
+
+    }
+    Users.push(data)
+    setTimeout(() => {
+      sendTextMessage(userID, 'คุณได้ทำการสมัครสมาชิกเรียบร้อยแล้ว :D สามารถยกเลิกการสมัครได้โดยการพิมพ์ว่า "unsubscript"')
+    }, 1000)
+    setTimeout(() => {
+      sendTextMessage(userID, 'กรุณากรอก Channel ที่คุณต้องการจะติดตาม')
+    }, 2000)
+  }
+}
+
+function addChannel (senderID, messageText) {
+  var userData = userInfo.find(user => user.UID === senderID)
+  var follow = userData.follower
+  var liveCheck = userData.live
+  axios.get('https://api.twitch.tv/kraken/channels/' + messageText + '/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
+  .then( function (res) {
+    console.log(res.status)
+    if (res.status === 200) {
+      let data = {
+        name: messageText,
+        live: false,
+        send: false
+      }
+      follow.push(data)
+      setTimeout(() => {
+        sendTextMessage(senderID, 'คุณได้เพิ่ม Channel ' + messageText + ' เป็นที่เรียบร้อยแล้ว')
+      }, 1000)
+      setTimeout(() => {
+        sendTextMessage(senderID, 'คุณสามารถพิมพ์ !list เพื่อตรวจเช็ครายชื่อ Channel ที่คุณติดตาม หรือ สามารถใส่ชื่อ Channel ที่ต้องการต่อได้เลย')
+      }, 2000)
+      firebase.database().ref('users/' + userData.id).update({
+        follower: follow
+      })
+    }
+  })
+  .catch( function (err) {
+    console.log(err)
+    sendTextMessage(senderID, 'คุณกรอก Channel ไม่ถูกต้องกรุณากรอกใหม่')
+  })
+}
+
+function checkList () {
+
+  if(userInfo){
+  userInfo.forEach( function (data,index) {
+    console.log(index)
+    data.follower.forEach( function (follow, index2) {
+      axios.get('https://api.twitch.tv/kraken/streams/'+follow.name+'/?client_id=l13ikftl5r75akwu350wqebougu9i1m')
+      .then( function (res){
+        if (res.data.stream != null) {
+           firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
+             live: true
+        })
+        }
+        else {
+          firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
+            name: follow.name,
+            live: false,
+            send: false
+       })
+        }
+      }).catch( function(err){
+          console.log(err)
+      })
+    })
+  })
+  }
+}
+
+function checkSend () {
+
+var imglink = 'https://lh5.googleusercontent.com/Z4HSK19DSI2Qzw3rYhVMSeNIn94QV72RyJLCbnrvIOZGcu0E-W0zY9WHRx6EnuzfsRU3kTMznMqgaOU=w1858-h1011'
+userInfo.forEach( function (data,index) {
+
+  data.follower.forEach( function (follow,index2) {
+    if(follow.live && !follow.send){
+      axios.get('https://api.twitch.tv/kraken/channels/'+follow.name+'?client_id=l13ikftl5r75akwu350wqebougu9i1m')
+      .then( function (res){
+        if(res.data.log != null){
+        sendLiveTwitch(data.UID,follow.name,res.data.logo,res.data.game)
+        }
+        else{
+          sendLiveTwitch(data.UID,follow.name,imglink,res.data.game)
+        }
+      })
+      /*setTimeout(() => {
+        sendTextMessage(data.UID,'ช่อง '+follow.name+' ที่คุณติดตามไว้ Live แล้วสามารถรับเข้าไปรับชมได้' )
+      }, 1000)
+      setTimeout(() => {
+        sendTextMessage(data.UID,'Link :https://www.twitch.tv/'+follow.name)
+      }, 2000)*/
+
+        firebase.database().ref('users/' + data.id +'/follower/'+index2).update({
+          send: true
+     })
+    // console.log('send message already')
+  }
+  })
 })
+}
 
-// Make the app listen on port 3000
-app.listen(port, function() {
-  console.log('Server listening on http://localhost:' + port)
+function deleteUser (senderID) {
+  var userIn = userInfo.find(user => user.UID === senderID)
+
+  firebase.database().ref('users/' +userIn.id+'').remove()
+  sendTextMessage(senderID, 'ขอบคุณที่ใช้งานที่ไว้วางใจใช้งาน Alert Twitch ของเรา :P ')
+  }
+
+
+function showList (senderID) {
+    sendTextMessage(senderID,'คุณสามารถลบ Channel ที่ไม่ต้องการได้โดยการพิมพ์ชื่อ ![ชื่อที่ต้องการลบ] เช่น !eiei')
+    var userIn = userInfo.find(user => user.UID === senderID)
+    setTimeout(() => {
+    userIn.follower.forEach( function (data,index){
+        sendTextMessage(senderID,' '+data.name+'\n')
+      })
+    }, 1000)
+}
+
+function deleteChannel (senderID, messageText){
+  console.log(messageText)
+  var userIn = userInfo.find(user => user.UID === senderID)
+  var veri
+  //var veri = userIn.follower.find(follow => follow.name === messageText)
+  userIn.follower.forEach( function (user,index) {
+    if (user.name === messageText ) {}
+    veri = user.name
+  })
+
+  if(veri){
+    userIn.follower.forEach( function (user,index) {
+      if (user.name === messageText ) {
+        firebase.database().ref('users/' +userIn.id+'/follower/'+index).remove()
+        setTimeout(() => {
+          sendTextMessage(senderID,'เราได้ลบ '+messageText+' เรียบร้อยแล้ว')
+        }, 1000)
+        setTimeout(() => {
+          sendTextMessage(senderID,'คุณสามารถ !list เพื่อแสดง Channel ทั้งหมดหรือ สามารถกรอกชื่อ Channel ที่ต้องการเพิ่มได้')
+        }, 2000)
+
+
+      }
+    })
+  }
+  else {
+    sendTextMessage(senderID,'คุณกรอก Channel ที่ต้องการลบ ผิด')
+  }
+
+  /*){
+  firebase.database().ref('users/' +userIn.id+'/follower/'+).remove()
+  sendTextMessage(senderID,'เราได้ลบ '+messageText+' เรียบร้อยแล้ว')
+  }
+  else {
+    sendTextMessage(senderID,'คุณกรอก Channel ที่ต้องการลบ ผิด')
+  }*/
+}
+
+function sendWelcome(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: 'template',
+        payload: {
+          template_type: 'button',
+          text: 'ยินดีต้อนรับสู่ Alert Twitch คุณสามารถเริ่มใช้งานได้โดยการเลือก \n subscript ถ้ามีข้อสงสัยสามารถพิมพ์ help',
+          buttons:[{
+            type: 'postback',
+            title: 'subscript',
+            payload: 'subscript'
+          }, {
+            type: 'web_url',
+            url: 'goo.gl/H7oDuZ',
+            title: 'help'
+          }]
+        }
+      }
+    }
+  }
+  callSendAPI(messageData)
+}
+
+function sendLiveTwitch(recipientId,chName,img,game) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message:{
+    attachment:{
+      type:'template',
+      payload:{
+        template_type:'generic',
+        elements:[
+          {
+            title:'ช่อง '+chName+' ที่คุณติดตาม Live แล้ว !!',
+            item_url:'https://www.twitch.tv/'+chName,
+            image_url:''+img,
+            subtitle:'Streaming Game : '+game,
+            buttons:[
+              {
+                type:'web_url',
+                url:'https://www.twitch.tv/'+chName,
+                title:'Watch now'
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+      }
+    callSendAPI(messageData)
+}
+
+app.listen(app.get('port'), function () {
+  console.log('run at port', app.get('port'))
 })
